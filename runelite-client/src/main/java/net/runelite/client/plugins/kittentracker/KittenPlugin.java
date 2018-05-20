@@ -140,6 +140,11 @@ public class KittenPlugin extends Plugin
 			getFollowerID();
 		}
 
+		if (playerHasFollower() & followerID != 0) // follower changed ID
+		{
+			getFollowerID();
+		}
+
 		if (!playerHasFollower() & followerID != 0) // player lost it's follower
 		{
 			byeFollower();
@@ -154,14 +159,22 @@ public class KittenPlugin extends Plugin
 		{
 			s = "0" + s;
 		}
+		int previousFollowerID = 0;
+		if (followerID != 0)
+		{
+			previousFollowerID = followerID;
+		}
 
 		// followerID is the first 2 octets converted into decimals
 		followerID = Integer.parseInt(s.substring(0, 16), 2);
+		if (followerID == previousFollowerID)
+		{
+			return;
+		}
 		if (followerID != 0) //Varbit needs to fill up first after logging in
 		{
 			newFollower();
 		}
-
 	}
 
 	private void newFollower()
@@ -216,6 +229,7 @@ public class KittenPlugin extends Plugin
 				addKittenGrowthBox(14400);
 				addHungryTimer(1800);
 				addAttentionTimer(1800);
+				saveGrowthProgress();
 			}
 
 		}
@@ -223,6 +237,7 @@ public class KittenPlugin extends Plugin
 		{
 			if (followerID == previousFeline) // The same cat is back!
 			{
+				catSpawned = Instant.now();
 				timeSpendGrowing = config.secondsAlive();
 				addKittenGrowthBox((14400 - timeSpendGrowing));
 			}
@@ -230,6 +245,7 @@ public class KittenPlugin extends Plugin
 			{
 				catSpawned = Instant.now();
 				addKittenGrowthBox(14400);
+				saveGrowthProgress();
 			}
 		}
 	}
@@ -249,7 +265,6 @@ public class KittenPlugin extends Plugin
 			saveGrowthProgress();
 			catSpawned = null;
 		}
-
 		infoBoxManager.removeIf(t -> t instanceof KittenGrowthTimer);
 		infoBoxManager.removeIf(t -> t instanceof KittenHungryTimer);
 		infoBoxManager.removeIf(t -> t instanceof KittenAttentionTimer);
