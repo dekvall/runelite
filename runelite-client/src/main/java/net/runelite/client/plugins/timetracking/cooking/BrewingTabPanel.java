@@ -118,12 +118,12 @@ public class BrewingTabPanel extends TabContentPanel
 					panel.getEstimate().setText("Empty");
 					break;
 				case WATER_ADDED:
-					panel.getIcon().setToolTipText("Water");
-					panel.getEstimate().setText("Water");
+					panel.getIcon().setToolTipText("Water added");
+					panel.getEstimate().setText("Water added");
 					break;
 				case BARLEY_MALT_ADDED:
-					panel.getIcon().setToolTipText("Barley malt");
-					panel.getEstimate().setText("Barely malt");
+					panel.getIcon().setToolTipText("Barley malt added");
+					panel.getEstimate().setText("Barely malt added");
 					break;
 				case INGREDIENTS_ADDED:
 					panel.getIcon().setToolTipText("Ingredients added");
@@ -135,7 +135,7 @@ public class BrewingTabPanel extends TabContentPanel
 					break;
 				case SET:
 					panel.getProgress().setValue(1);
-					panel.getEstimate().setText("Turned");
+					panel.getEstimate().setText("Set");
 					break;
 				case COMPLETE:
 					panel.getProgress().setValue(2);

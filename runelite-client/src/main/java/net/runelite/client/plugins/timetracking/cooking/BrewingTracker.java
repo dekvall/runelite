@@ -73,32 +73,6 @@ public class BrewingTracker
 		return new BrewingTabPanel(itemManager, this, config);
 	}
 
-	public void loadFromConfig()
-	{
-		brewingData.clear();
-
-		final String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername() + "." + TimeTrackingConfig.BREWING;
-
-		for (BrewingPlace place : BrewingPlace.values())
-		{
-			String key = Integer.toString(place.getVarbit().getId());
-			String storedValue = configManager.getConfiguration(group, key);
-
-			if (storedValue != null)
-			{
-				try
-				{
-					int value = Integer.parseInt(storedValue);
-					brewingData.put(place, new BrewingData(place, value));
-				}
-				catch (NumberFormatException e)
-				{
-					// ignored
-				}
-			}
-		}
-	}
-
 	/**
 	 * Updates tracker data if player is within range of any vats. Returns true if any data was changed.
 	 */
@@ -121,7 +95,6 @@ public class BrewingTracker
 		if (changed)
 		{
 			brewingData.putAll(newData);
-			saveToConfig(newData);
 		}
 		return changed;
 	}
@@ -145,16 +118,5 @@ public class BrewingTracker
 		}
 
 		return false;
-	}
-
-	private void saveToConfig(Map<BrewingPlace, BrewingData> updatedData)
-	{
-		final String group = TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername() + "." + TimeTrackingConfig.BREWING;
-
-		for (BrewingData data : updatedData.values())
-		{
-			String key = Integer.toString(data.getVat().getVarbit().getId());
-			configManager.setConfiguration(group, key, data.getVat().getVarbit());
-		}
 	}
 }
