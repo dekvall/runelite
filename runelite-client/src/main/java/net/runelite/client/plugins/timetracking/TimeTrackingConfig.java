@@ -34,6 +34,7 @@ public interface TimeTrackingConfig extends Config
 	String CONFIG_GROUP = "timetracking";
 	String AUTOWEED = "autoweed";
 	String BIRD_HOUSE = "birdhouse";
+	String BREWING = "brewing";
 	String TIMERS = "timers";
 	String STOPWATCHES = "stopwatches";
 
@@ -71,10 +72,21 @@ public interface TimeTrackingConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "brewingNotification",
+		name = "Brewing notification",
+		description = "Notify you when a vat is completed",
+		position = 4
+	)
+	default boolean brewingNotification()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "defaultTimerMinutes",
 		name = "Default Time (Minutes)",
 		description = "The default time for the timer in minutes",
-		position = 4
+		position = 5
 	)
 	default int defaultTimerMinutes()
 	{

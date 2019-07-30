@@ -35,6 +35,7 @@ public enum Tab
 	OVERVIEW("Overview", ItemID.OLD_NOTES),
 	CLOCK("Timers & Stopwatches", ItemID.WATCH),
 	BIRD_HOUSE("Bird Houses", ItemID.OAK_BIRD_HOUSE),
+	BREWING("Brewing", ItemID.ASGOLDIAN_ALE),
 	ALLOTMENT("Allotment Patches", ItemID.CABBAGE),
 	FLOWER("Flower Patches", ItemID.RED_FLOWERS),
 	HERB("Herb Patches", ItemID.GRIMY_RANARR_WEED),

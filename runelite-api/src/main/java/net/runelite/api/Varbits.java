@@ -34,12 +34,12 @@ import lombok.Getter;
 @Getter
 public enum Varbits
 {
-	/*
+	/**
 	 * If chatbox is transparent or not
 	 */
 	TRANSPARENT_CHATBOX(4608),
 
-	/*
+	/**
 	 * If the player has an active stamina potion effect or not
 	 */
 	RUN_SLOWED_DEPLETION_ACTIVE(25),
@@ -429,6 +429,12 @@ public enum Varbits
 	 * Automatically weed farming patches
 	 */
 	AUTOWEED(5557),
+
+	/**
+	 * Brewing vats
+	 */
+	KELDAGRIM_VAT(736),
+	PORT_PHASMATYS_VAT(737),
 
 	/**
 	 * The varbit that stores the players {@code AccountType}.

@@ -50,6 +50,7 @@ import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.CONFIG
 import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.STOPWATCHES;
 import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.TIMERS;
 import net.runelite.client.plugins.timetracking.clocks.ClockManager;
+import net.runelite.client.plugins.timetracking.cooking.BrewingTracker;
 import net.runelite.client.plugins.timetracking.farming.FarmingTracker;
 import net.runelite.client.plugins.timetracking.hunter.BirdHouseTracker;
 import net.runelite.client.task.Schedule;
@@ -78,6 +79,9 @@ public class TimeTrackingPlugin extends Plugin
 
 	@Inject
 	private ClockManager clockManager;
+
+	@Inject
+	private BrewingTracker brewingTracker;
 
 	@Inject
 	private ItemManager itemManager;
@@ -109,11 +113,12 @@ public class TimeTrackingPlugin extends Plugin
 		clockManager.loadTimers();
 		clockManager.loadStopwatches();
 		birdHouseTracker.loadFromConfig();
+		brewingTracker.loadFromConfig();
 		farmingTracker.loadCompletionTimes();
 
 		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "watch.png");
 
-		panel = new TimeTrackingPanel(itemManager, config, farmingTracker, birdHouseTracker, clockManager);
+		panel = new TimeTrackingPanel(itemManager, config, farmingTracker, birdHouseTracker, clockManager, brewingTracker);
 
 		navButton = NavigationButton.builder()
 			.tooltip("Time Tracking")
@@ -193,8 +198,9 @@ public class TimeTrackingPlugin extends Plugin
 
 		boolean birdHouseDataChanged = birdHouseTracker.updateData(loc);
 		boolean farmingDataChanged = farmingTracker.updateData(loc);
+		boolean brewingDataChanged = brewingTracker.updateData(loc);
 
-		if (birdHouseDataChanged || farmingDataChanged)
+		if (birdHouseDataChanged || farmingDataChanged || brewingDataChanged)
 		{
 			panel.update();
 		}

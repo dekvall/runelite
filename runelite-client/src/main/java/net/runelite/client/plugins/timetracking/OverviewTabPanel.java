@@ -33,6 +33,7 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.clocks.ClockManager;
+import net.runelite.client.plugins.timetracking.cooking.BrewingTracker;
 import net.runelite.client.plugins.timetracking.farming.FarmingTracker;
 import net.runelite.client.plugins.timetracking.hunter.BirdHouseTracker;
 import net.runelite.client.ui.ColorScheme;
@@ -43,19 +44,22 @@ class OverviewTabPanel extends TabContentPanel
 	private final FarmingTracker farmingTracker;
 	private final BirdHouseTracker birdHouseTracker;
 	private final ClockManager clockManager;
+	private final BrewingTracker brewingTracker;
 
 	private final OverviewItemPanel timerOverview;
 	private final OverviewItemPanel stopwatchOverview;
 	private final Map<Tab, OverviewItemPanel> farmingOverviews;
 	private final OverviewItemPanel birdHouseOverview;
+	private final OverviewItemPanel brewingOverview;
 
 	OverviewTabPanel(ItemManager itemManager, TimeTrackingConfig config, TimeTrackingPanel pluginPanel,
-		FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker, ClockManager clockManager)
+					 FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker, ClockManager clockManager, BrewingTracker brewingTracker)
 	{
 		this.config = config;
 		this.farmingTracker = farmingTracker;
 		this.birdHouseTracker = birdHouseTracker;
 		this.clockManager = clockManager;
+		this.brewingTracker = brewingTracker;
 
 		setLayout(new GridLayout(0, 1, 0, 8));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -80,6 +84,9 @@ class OverviewTabPanel extends TabContentPanel
 					return p;
 				}
 			));
+
+		brewingOverview = new OverviewItemPanel(itemManager, pluginPanel, Tab.BREWING, "Brewing");
+		add(brewingOverview);
 	}
 
 	@Override

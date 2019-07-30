@@ -41,6 +41,7 @@ import javax.swing.border.EmptyBorder;
 import net.runelite.client.game.AsyncBufferedImage;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.clocks.ClockManager;
+import net.runelite.client.plugins.timetracking.cooking.BrewingTracker;
 import net.runelite.client.plugins.timetracking.farming.FarmingTracker;
 import net.runelite.client.plugins.timetracking.hunter.BirdHouseTracker;
 import net.runelite.client.ui.ColorScheme;
@@ -64,7 +65,7 @@ class TimeTrackingPanel extends PluginPanel
 	private TabContentPanel activeTabPanel = null;
 
 	TimeTrackingPanel(ItemManager itemManager, TimeTrackingConfig config,
-		FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker, ClockManager clockManager)
+		FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker, ClockManager clockManager, BrewingTracker brewingTracker)
 	{
 		super(false);
 
@@ -82,7 +83,7 @@ class TimeTrackingPanel extends PluginPanel
 		add(tabGroup, BorderLayout.NORTH);
 		add(display, BorderLayout.CENTER);
 
-		addTab(Tab.OVERVIEW, new OverviewTabPanel(itemManager, config, this, farmingTracker, birdHouseTracker, clockManager));
+		addTab(Tab.OVERVIEW, new OverviewTabPanel(itemManager, config, this, farmingTracker, birdHouseTracker, clockManager, brewingTracker));
 		addTab(Tab.CLOCK, clockManager.getClockTabPanel());
 		addTab(Tab.BIRD_HOUSE, birdHouseTracker.createBirdHouseTabPanel());
 
@@ -90,6 +91,8 @@ class TimeTrackingPanel extends PluginPanel
 		{
 			addTab(tab, farmingTracker.createTabPanel(tab));
 		}
+
+		addTab(Tab.BREWING, brewingTracker.createBrewingTabPanel());
 	}
 
 	private void addTab(Tab tab, TabContentPanel tabContentPanel)
