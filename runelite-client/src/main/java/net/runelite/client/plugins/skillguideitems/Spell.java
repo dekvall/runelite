@@ -271,130 +271,14 @@ enum Spell
 		StringBuilder sb = new StringBuilder();
 		boolean first = true;
 
-		if (airRuneCount > 0)
-		{
-			sb.append(airRuneCount);
-			sb.append(" air ");
-			first = false;
-		}
-		if (mindRuneCount > 0)
+		if (wrathRuneCount > 0)
 		{
 			if (!first)
 			{
 				sb.append("+ ");
 			}
-			sb.append(mindRuneCount);
-			sb.append(" mind ");
-			first = false;
-		}
-		if (waterRuneCount > 0)
-		{
-			if (!first)
-			{
-				sb.append("+ ");
-			}
-			sb.append(waterRuneCount);
-			sb.append(" water ");
-			first = false;
-		}
-		if (earthRuneCount > 0)
-		{
-			if (!first)
-			{
-				sb.append("+ ");
-			}
-			sb.append(earthRuneCount);
-			sb.append(" earth ");
-			first = false;
-		}
-		if (fireRuneCount > 0)
-		{
-			if (!first)
-			{
-				sb.append("+ ");
-			}
-			sb.append(fireRuneCount);
-			sb.append(" fire ");
-			first = false;
-		}
-		if (bodyRuneCount > 0)
-		{
-			if (!first)
-			{
-				sb.append("+ ");
-			}
-			sb.append(bodyRuneCount);
-			sb.append(" body ");
-			first = false;
-		}
-		if (cosmicRuneCount > 0)
-		{
-			if (!first)
-			{
-				sb.append("+ ");
-			}
-			sb.append(cosmicRuneCount);
-			sb.append(" cosmic ");
-			first = false;
-		}
-		if (chaosRuneCount > 0)
-		{
-			if (!first)
-			{
-				sb.append("+ ");
-			}
-			sb.append(chaosRuneCount);
-			sb.append(" chaos ");
-			first = false;
-		}
-		if (astralRuneCount > 0)
-		{
-			if (!first)
-			{
-				sb.append("+ ");
-			}
-			sb.append(astralRuneCount);
-			sb.append(" astral ");
-			first = false;
-		}
-		if (natureRuneCount > 0)
-		{
-			if (!first)
-			{
-				sb.append("+ ");
-			}
-			sb.append(natureRuneCount);
-			sb.append(" nature ");
-			first = false;
-		}
-		if (lawRuneCount > 0)
-		{
-			if (!first)
-			{
-				sb.append("+ ");
-			}
-			sb.append(lawRuneCount);
-			sb.append(" law ");
-			first = false;
-		}
-		if (deathRuneCount > 0)
-		{
-			if (!first)
-			{
-				sb.append("+ ");
-			}
-			sb.append(deathRuneCount);
-			sb.append(" death ");
-			first = false;
-		}
-		if (bloodRuneCount > 0)
-		{
-			if (!first)
-			{
-				sb.append("+ ");
-			}
-			sb.append(mindRuneCount);
-			sb.append(" blood ");
+			sb.append(wrathRuneCount);
+			sb.append(" wrath ");
 			first = false;
 		}
 		if (soulRuneCount > 0)
@@ -407,17 +291,138 @@ enum Spell
 			sb.append(" soul ");
 			first = false;
 		}
-		if (wrathRuneCount > 0)
+		if (bloodRuneCount > 0)
 		{
 			if (!first)
 			{
 				sb.append("+ ");
 			}
-			sb.append(wrathRuneCount);
-			sb.append(" wrath ");
+			sb.append(bloodRuneCount);
+			sb.append(" blood ");
 			first = false;
 		}
-		sb.append("runes");
+		if (deathRuneCount > 0)
+		{
+			if (!first)
+			{
+				sb.append("+ ");
+			}
+			sb.append(deathRuneCount);
+			sb.append(" death ");
+			first = false;
+		}
+		if (lawRuneCount > 0)
+		{
+			if (!first)
+			{
+				sb.append("+ ");
+			}
+			sb.append(lawRuneCount);
+			sb.append(" law ");
+			first = false;
+		}
+		if (natureRuneCount > 0)
+		{
+			if (!first)
+			{
+				sb.append("+ ");
+			}
+			sb.append(natureRuneCount);
+			sb.append(" nature ");
+			first = false;
+		}
+		if (astralRuneCount > 0)
+		{
+			if (!first)
+			{
+				sb.append("+ ");
+			}
+			sb.append(astralRuneCount);
+			sb.append(" astral ");
+			first = false;
+		}
+		if (chaosRuneCount > 0)
+		{
+			if (!first)
+			{
+				sb.append("+ ");
+			}
+			sb.append(chaosRuneCount);
+			sb.append(" chaos ");
+			first = false;
+		}
+
+		if (cosmicRuneCount > 0)
+		{
+			if (!first)
+			{
+				sb.append("+ ");
+			}
+			sb.append(cosmicRuneCount);
+			sb.append(" cosmic ");
+			first = false;
+		}
+		if (bodyRuneCount > 0)
+		{
+			if (!first)
+			{
+				sb.append("+ ");
+			}
+			sb.append(bodyRuneCount);
+			sb.append(" body ");
+			first = false;
+		}
+		if (fireRuneCount > 0)
+		{
+			if (!first)
+			{
+				sb.append("+ ");
+			}
+			sb.append(fireRuneCount);
+			sb.append(" fire ");
+			first = false;
+		}
+		if (earthRuneCount > 0)
+		{
+			if (!first)
+			{
+				sb.append("+ ");
+			}
+			sb.append(earthRuneCount);
+			sb.append(" earth ");
+			first = false;
+		}
+		if (waterRuneCount > 0)
+		{
+			if (!first)
+			{
+				sb.append("+ ");
+			}
+			sb.append(waterRuneCount);
+			sb.append(" water ");
+			first = false;
+		}
+		if (mindRuneCount > 0)
+		{
+			if (!first)
+			{
+				sb.append("+ ");
+			}
+			sb.append(mindRuneCount);
+			sb.append(" mind ");
+			first = false;
+		}
+		if (airRuneCount > 0)
+		{
+			if (!first)
+			{
+				sb.append("+ ");
+			}
+			sb.append(airRuneCount);
+			sb.append(" air ");
+			first = false;
+		}
+		sb.append(bananaCount > 0 ? "banana" : "runes");
 
 		return sb.toString();
 	}

@@ -142,6 +142,7 @@ public class WidgetID
 	public static final int SEED_BOX_GROUP_ID = 128;
 	public static final int ITEMS_KEPT_ON_DEATH_GROUP_ID = 4;
 	public static final int SEED_VAULT_GROUP_ID = 631;
+	public static final int SKILL_GUIDE_GROUP_ID = 214;
 
 	static class WorldMap
 	{

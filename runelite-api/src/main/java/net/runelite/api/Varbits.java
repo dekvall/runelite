@@ -492,6 +492,11 @@ public enum Varbits
 	QUEST_TAB(8168),
 
 	/**
+	 * The active tab within the skill guide interface
+	 */
+	SKILL_GUIDE_TAB(4372),
+
+	/**
 	 * Explorer ring
 	 */
 	EXPLORER_RING_ALCHTYPE(5398),
