@@ -39,6 +39,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.UsernameChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
@@ -163,6 +164,17 @@ public class TimeTrackingPlugin extends Plugin
 			clockManager.loadStopwatches();
 		}
 	}
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		boolean brewingDataChanged = brewingTracker.updateData();
+
+		if (brewingDataChanged)
+		{
+			panel.update();
+		}
+		brewingTracker.checkCompletion();
+	}
 
 	@Subscribe
 	public void onGameTick(GameTick t)
@@ -197,9 +209,8 @@ public class TimeTrackingPlugin extends Plugin
 
 		boolean birdHouseDataChanged = birdHouseTracker.updateData(loc);
 		boolean farmingDataChanged = farmingTracker.updateData(loc);
-		boolean brewingDataChanged = brewingTracker.updateData(loc);
 
-		if (birdHouseDataChanged || farmingDataChanged || brewingDataChanged)
+		if (birdHouseDataChanged || farmingDataChanged)
 		{
 			panel.update();
 		}

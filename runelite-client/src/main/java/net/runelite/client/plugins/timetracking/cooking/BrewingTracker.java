@@ -53,7 +53,7 @@ public class BrewingTracker
 	private final Notifier notifier;
 
 	@Getter(AccessLevel.PACKAGE)
-	private final ConcurrentMap<BrewingPlace, BrewingData> brewingData = new ConcurrentHashMap<>();
+	private final ConcurrentMap<BrewingPlace, Integer> brewingData = new ConcurrentHashMap<>();
 
 	@Getter
 	private SummaryState summary = SummaryState.UNKNOWN;
@@ -73,22 +73,20 @@ public class BrewingTracker
 		return new BrewingTabPanel(itemManager, this, config);
 	}
 
-	/**
-	 * Updates tracker data if player is within range of any vats. Returns true if any data was changed.
-	 */
-	public boolean updateData(WorldPoint location)
+	public boolean updateData()
 	{
 		boolean changed = false;
-		final Map<BrewingPlace, BrewingData> newData = new HashMap<>();
+		final Map<BrewingPlace, Integer> newData = new HashMap<>();
 
 		for (BrewingPlace place : BrewingPlace.values())
 		{
 			int newValue = client.getVar(place.getVarbit());
-			BrewingData oldData = brewingData.get(place);
-			int oldValue = oldData == null ? -1 : oldData.getValue();
+			Integer oldData = brewingData.get(place);
+			int oldValue = oldData == null ? -1 : oldData;
+
 			if (newValue != oldValue)
 			{
-				newData.put(place, new BrewingData(place, newValue));
+				newData.put(place, newValue);
 				changed = true;
 			}
 		}
@@ -100,12 +98,12 @@ public class BrewingTracker
 	}
 
 	/**
-	 * Checks if the bird houses have become ready to be dismantled,
-	 * and sends a notification if required.
+	 * Checks if the brews have been completed and sends a notification if required
+	 *
 	 */
 	public boolean checkCompletion()
 	{
-		if (summary == SummaryState.IN_PROGRESS && brewingData.values().stream().allMatch(data -> BrewingState.getState(data.getValue()) == BrewingState.COMPLETE))
+		if (summary == SummaryState.IN_PROGRESS && false) //TODO
 		{
 			summary = SummaryState.COMPLETED;
 

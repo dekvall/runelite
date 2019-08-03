@@ -27,7 +27,6 @@ package net.runelite.client.plugins.timetracking.cooking;
 
 import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
-import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -41,8 +40,9 @@ enum BrewingState
 	YEAST_ADDED(ColorScheme.PROGRESS_COMPLETE_COLOR),
 	SET(ColorScheme.PROGRESS_COMPLETE_COLOR),
 	COMPLETE(ColorScheme.PROGRESS_COMPLETE_COLOR),
-	//MATURE_COMPLETE(ColorScheme.PROGRESS_COMPLETE_COLOR),
-	//BAD(ColorScheme.PROGRESS_ERROR_COLOR),
+	MATURE_COMPLETE(ColorScheme.PROGRESS_COMPLETE_COLOR),
+
+	BAD(ColorScheme.PROGRESS_ERROR_COLOR),
 	EMPTY(ColorScheme.MEDIUM_GRAY_COLOR),
 	WATER_ADDED(ColorScheme.MEDIUM_GRAY_COLOR),
 	BARLEY_MALT_ADDED(ColorScheme.MEDIUM_GRAY_COLOR),
@@ -54,26 +54,17 @@ enum BrewingState
 	{
 		ImmutableMap.Builder<Integer, BrewingState> builder = new ImmutableMap.Builder<>();
 		BrewingState[] states = BrewingState.values();
-		Integer[] brewValues;
-		List<Integer> brewValueList;
+		int[] brewValues;
 
 		builder.put(0, EMPTY);
 		builder.put(1, WATER_ADDED);
 		builder.put(2, BARLEY_MALT_ADDED);
+		builder.put(3, BAD); //Prototype
 
 		for (Brew brew : Brew.values())
 		{
-			brewValueList = brew.getValues(); //TODO
-
-			if (brewValueList == null) continue; //TODO
-
-			brewValues = brewValueList.toArray(new Integer[0]);
-			if (brew == Brew.CIDER)
-			{
-				//special case
-				continue;
-			}
-			for (int i = 0; i < brewValues.length; i++)
+			brewValues = brew.getValues();
+			for (int i = 0; i < brewValues.length && i < states.length; i++)
 			{
 				builder.put(brewValues[i], states[i]);
 			}

@@ -41,6 +41,7 @@ import net.runelite.client.ui.DynamicGridLayout;
 public class BrewingTabPanel extends TabContentPanel
 {
 	private static final Color COMPLETED_COLOR = ColorScheme.PROGRESS_COMPLETE_COLOR.darker();
+	private static final Color BAD_COLOR = ColorScheme.PROGRESS_ERROR_COLOR;
 
 	private final ItemManager itemManager;
 	private final BrewingTracker brewingTracker;
@@ -86,12 +87,12 @@ public class BrewingTabPanel extends TabContentPanel
 		for (TimeablePanel<BrewingPlace> panel : spacePanels)
 		{
 			BrewingPlace space = panel.getTimeable();
-			BrewingData data = brewingTracker.getBrewingData().get(space);
+			Integer data = brewingTracker.getBrewingData().get(space);
 			int value = -1;
 
 			if (data != null)
 			{
-				value = data.getValue();
+				value = data;
 			}
 
 			Brew brew = Brew.getBrew(value);
@@ -141,6 +142,17 @@ public class BrewingTabPanel extends TabContentPanel
 					panel.getProgress().setValue(2);
 					panel.getProgress().setForeground(COMPLETED_COLOR);
 					panel.getEstimate().setText("Complete");
+					break;
+				case MATURE_COMPLETE:
+					panel.getProgress().setValue(2);
+					panel.getProgress().setForeground(COMPLETED_COLOR);
+					panel.getEstimate().setText("Mature & Complete");
+					break;
+				case BAD:
+					panel.getProgress().setValue(0);
+					panel.getProgress().setForeground(BAD_COLOR);
+					panel.getEstimate().setText("Went bad");
+					break;
 				default:
 					panel.getIcon().setToolTipText("Unknown state");
 					panel.getEstimate().setText("Unknown");
