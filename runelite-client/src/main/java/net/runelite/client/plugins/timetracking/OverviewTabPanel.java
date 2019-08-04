@@ -53,7 +53,7 @@ class OverviewTabPanel extends TabContentPanel
 	private final OverviewItemPanel brewingOverview;
 
 	OverviewTabPanel(ItemManager itemManager, TimeTrackingConfig config, TimeTrackingPanel pluginPanel,
-					 FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker, ClockManager clockManager, BrewingTracker brewingTracker)
+					FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker, ClockManager clockManager, BrewingTracker brewingTracker)
 	{
 		this.config = config;
 		this.farmingTracker = farmingTracker;
@@ -123,6 +123,8 @@ class OverviewTabPanel extends TabContentPanel
 			updateItemPanel(panel, farmingTracker.getSummary(patchType), farmingTracker.getCompletionTime(patchType)));
 
 		updateItemPanel(birdHouseOverview, birdHouseTracker.getSummary(), birdHouseTracker.getCompletionTime());
+
+		updateItemPanel(brewingOverview, brewingTracker.getSummary(), brewingTracker.isAnyComplete());
 	}
 
 	private void updateItemPanel(OverviewItemPanel panel, SummaryState summary, long completionTime)
@@ -143,6 +145,33 @@ class OverviewTabPanel extends TabContentPanel
 					panel.updateStatus("Ready " + getFormattedEstimate(duration, config.estimateRelative()), Color.GRAY);
 				}
 
+				break;
+			}
+			case EMPTY:
+				panel.updateStatus("Empty", Color.GRAY);
+				break;
+			case UNKNOWN:
+			default:
+				panel.updateStatus("Unknown", Color.GRAY);
+				break;
+		}
+	}
+
+	private void updateItemPanel(OverviewItemPanel panel, SummaryState summary, boolean anyComplete)
+	{
+		switch (summary)
+		{
+			case COMPLETED:
+			case IN_PROGRESS:
+			{
+				if (anyComplete)
+				{
+					panel.updateStatus("Ready", ColorScheme.PROGRESS_COMPLETE_COLOR);
+				}
+				else
+				{
+					panel.updateStatus("In progress", ColorScheme.PROGRESS_INPROGRESS_COLOR);
+				}
 				break;
 			}
 			case EMPTY:

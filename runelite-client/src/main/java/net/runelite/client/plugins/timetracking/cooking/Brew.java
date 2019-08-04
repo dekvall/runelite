@@ -49,7 +49,7 @@ enum Brew
 	 * Gets the {@code Brew} corresponding to the given {@code VarBits} value.
 	 */
 	@Nullable
-	static Brew getBrew(int value)
+	static Brew of(int value)
 	{
 		return BREWS.get(value);
 	}

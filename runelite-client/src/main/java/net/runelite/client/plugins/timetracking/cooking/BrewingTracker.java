@@ -31,12 +31,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.stream.Stream;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.Notifier;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.SummaryState;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
@@ -44,11 +43,10 @@ import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
 @Singleton
 public class BrewingTracker
 {
-	static final int BREWING_STATES = 2;
+	static final int N_BREWING_STEPS = 2;
 
 	private final Client client;
 	private final ItemManager itemManager;
-	private final ConfigManager configManager;
 	private final TimeTrackingConfig config;
 	private final Notifier notifier;
 
@@ -58,12 +56,16 @@ public class BrewingTracker
 	@Getter
 	private SummaryState summary = SummaryState.UNKNOWN;
 
+	@Getter
+	private boolean anyComplete;
+
+	private boolean allComplete;
+
 	@Inject
-	private BrewingTracker(Client client, ItemManager itemManager, ConfigManager configManager, TimeTrackingConfig config, Notifier notifier)
+	private BrewingTracker(Client client, ItemManager itemManager, TimeTrackingConfig config, Notifier notifier)
 	{
 		this.client = client;
 		this.itemManager = itemManager;
-		this.configManager = configManager;
 		this.config = config;
 		this.notifier = notifier;
 	}
@@ -93,17 +95,19 @@ public class BrewingTracker
 		if (changed)
 		{
 			brewingData.putAll(newData);
+			allComplete = brewingData.values().stream().map(BrewingState::of).allMatch(state -> state == BrewingState.COMPLETE || state == BrewingState.MATURE_COMPLETE);
+			anyComplete = brewingData.values().stream().map(BrewingState::of).anyMatch(state -> state == BrewingState.COMPLETE || state == BrewingState.MATURE_COMPLETE);
 		}
 		return changed;
 	}
 
 	/**
-	 * Checks if the brews have been completed and sends a notification if required
+	 * Checks if the vats have finished brewing and send a notification if required
 	 *
 	 */
 	public boolean checkCompletion()
 	{
-		if (summary == SummaryState.IN_PROGRESS && false) //TODO
+		if (summary == SummaryState.IN_PROGRESS && allComplete)
 		{
 			summary = SummaryState.COMPLETED;
 

@@ -164,6 +164,7 @@ public class TimeTrackingPlugin extends Plugin
 			clockManager.loadStopwatches();
 		}
 	}
+
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
@@ -172,8 +173,8 @@ public class TimeTrackingPlugin extends Plugin
 		if (brewingDataChanged)
 		{
 			panel.update();
+			brewingTracker.checkCompletion();
 		}
-		brewingTracker.checkCompletion();
 	}
 
 	@Subscribe

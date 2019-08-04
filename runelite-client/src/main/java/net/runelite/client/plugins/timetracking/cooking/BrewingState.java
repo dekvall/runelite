@@ -75,7 +75,7 @@ enum BrewingState
 	/**
 	 * Gets the {@code BrewingState} corresponding to the given {@code VarPlayer} value.
 	 */
-	static BrewingState getState(int value)
+	static BrewingState of(int value)
 	{
 		return BREW_STATES.getOrDefault(value, UNKNOWN);
 	}

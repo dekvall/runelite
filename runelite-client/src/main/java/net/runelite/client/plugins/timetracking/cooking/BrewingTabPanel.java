@@ -61,7 +61,7 @@ public class BrewingTabPanel extends TabContentPanel
 		boolean first = true;
 		for (BrewingPlace space : BrewingPlace.values())
 		{
-			TimeablePanel<BrewingPlace> panel = new TimeablePanel<>(space, space.getName(), BrewingTracker.BREWING_STATES);
+			TimeablePanel<BrewingPlace> panel = new TimeablePanel<>(space, space.getName(), BrewingTracker.N_BREWING_STEPS);
 
 			spacePanels.add(panel);
 			add(panel);
@@ -86,8 +86,8 @@ public class BrewingTabPanel extends TabContentPanel
 	{
 		for (TimeablePanel<BrewingPlace> panel : spacePanels)
 		{
-			BrewingPlace space = panel.getTimeable();
-			Integer data = brewingTracker.getBrewingData().get(space);
+			BrewingPlace place = panel.getTimeable();
+			Integer data = brewingTracker.getBrewingData().get(place);
 			int value = -1;
 
 			if (data != null)
@@ -95,8 +95,8 @@ public class BrewingTabPanel extends TabContentPanel
 				value = data;
 			}
 
-			Brew brew = Brew.getBrew(value);
-			BrewingState state = BrewingState.getState(value);
+			Brew brew = Brew.of(value);
+			BrewingState state = BrewingState.of(value);
 
 			if (brew == null)
 			{
