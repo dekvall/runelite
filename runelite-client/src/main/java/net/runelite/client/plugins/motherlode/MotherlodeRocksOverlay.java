@@ -31,6 +31,8 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
+import java.util.Collection;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
@@ -71,7 +73,7 @@ class MotherlodeRocksOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if ((!config.showVeins() && !config.showRockFalls()) || !plugin.isInMlm())
+		if ((config.showVeins() == VeinOverlayMode.NEVER && !config.showRockFalls()) || !plugin.isInMlm())
 		{
 			return null;
 		}
@@ -85,20 +87,35 @@ class MotherlodeRocksOverlay extends Overlay
 
 	private void renderTiles(Graphics2D graphics, Player local)
 	{
+		System.out.println("Render tiles");
 		LocalPoint localLocation = local.getLocalLocation();
 
-		if (config.showVeins())
+		if (config.showVeins() == VeinOverlayMode.ALWAYS || config.showVeins() == VeinOverlayMode.RECENT)
 		{
-			for (WallObject vein : plugin.getVeins())
+			Collection<WallObject> activeVeins = plugin.getVeins();
+			if (config.showVeins() == VeinOverlayMode.RECENT)
+			{
+				//Handle vein depletions
+				//Wallobjects randomly get spawned and despawned, even if they are not getting mined.
+				activeVeins = plugin.getRecentVeins().stream()
+					.filter(activeVeins::contains)
+					.collect(Collectors.toList());
+			}
+			System.out.println(activeVeins.size());
+			System.out.println(plugin.getRecentVeins().size());
+
+			for (WallObject vein : activeVeins)
 			{
 				LocalPoint location = vein.getLocalLocation();
-				if (localLocation.distanceTo(location) <= MAX_DISTANCE)
+				if (localLocation.distanceTo(location) > MAX_DISTANCE)
 				{
-					// Only draw veins on the same level
-					if (plugin.isUpstairs(localLocation) == plugin.isUpstairs(vein.getLocalLocation()))
-					{
-						renderVein(graphics, vein);
-					}
+					continue;
+				}
+
+				// Only draw veins on the same level
+				if (plugin.isUpstairs(localLocation) == plugin.isUpstairs(vein.getLocalLocation()))
+				{
+					renderVein(graphics, vein);
 				}
 			}
 		}

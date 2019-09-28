@@ -37,9 +37,9 @@ public interface MotherlodeConfig extends Config
 		name = "Show pay-dirt mining spots",
 		description = "Configures whether or not the pay-dirt mining spots are displayed."
 	)
-	default boolean showVeins()
+	default VeinOverlayMode showVeins()
 	{
-		return true;
+		return VeinOverlayMode.ALWAYS;
 	}
 
 	@ConfigItem(

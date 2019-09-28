@@ -26,6 +26,7 @@
  */
 package net.runelite.client.plugins.motherlode;
 
+import com.google.common.collect.EvictingQueue;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multiset;
@@ -36,10 +37,13 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Queue;
 import java.util.Set;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
@@ -84,6 +88,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	tags = {"pay", "dirt", "mining", "mlm", "skilling", "overlay"},
 	enabledByDefault = false
 )
+@Slf4j
 public class MotherlodePlugin extends Plugin
 {
 	private static final Set<Integer> MOTHERLODE_MAP_REGIONS = ImmutableSet.of(14679, 14680, 14681, 14935, 14936, 14937, 15191, 15192, 15193);
@@ -91,6 +96,8 @@ public class MotherlodePlugin extends Plugin
 	private static final Set<Integer> MLM_ORE_TYPES = ImmutableSet.of(ItemID.RUNITE_ORE, ItemID.ADAMANTITE_ORE,
 		ItemID.MITHRIL_ORE, ItemID.GOLD_ORE, ItemID.COAL, ItemID.GOLDEN_NUGGET);
 	private static final Set<Integer> ROCK_OBSTACLES = ImmutableSet.of(ROCKFALL, ROCKFALL_26680);
+
+	private static final int RECENT_QUEUE_MAX_SIZE = 3;
 
 	private static final int MAX_INVENTORY_SIZE = 28;
 
@@ -144,6 +151,8 @@ public class MotherlodePlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<WallObject> veins = new HashSet<>();
 	@Getter(AccessLevel.PACKAGE)
+	private final Queue<WallObject> recentVeins = EvictingQueue.create(RECENT_QUEUE_MAX_SIZE);
+	@Getter(AccessLevel.PACKAGE)
 	private final Set<GameObject> rocks = new HashSet<>();
 
 	@Provides
@@ -179,6 +188,7 @@ public class MotherlodePlugin extends Plugin
 		overlayManager.remove(motherlodeSackOverlay);
 		veins.clear();
 		rocks.clear();
+		recentVeins.clear();
 
 		Widget sack = client.getWidget(WidgetInfo.MOTHERLODE_MINE);
 
@@ -228,6 +238,7 @@ public class MotherlodePlugin extends Plugin
 		{
 			case "You manage to mine some pay-dirt.":
 				session.incrementPayDirtMined();
+				addMinedVeinToRecent();
 				break;
 
 			case "You just found a Diamond!":
@@ -299,7 +310,6 @@ public class MotherlodePlugin extends Plugin
 		{
 			return;
 		}
-
 		WallObject previous = event.getPrevious();
 		WallObject wallObject = event.getWallObject();
 
@@ -317,8 +327,8 @@ public class MotherlodePlugin extends Plugin
 		{
 			return;
 		}
-
 		WallObject wallObject = event.getWallObject();
+		//Why is it removed gaaah
 		veins.remove(wallObject);
 	}
 
@@ -497,5 +507,28 @@ public class MotherlodePlugin extends Plugin
 	boolean isUpstairs(LocalPoint localPoint)
 	{
 		return Perspective.getTileHeight(client, localPoint, 0) < UPPER_FLOOR_HEIGHT;
+	}
+
+	void addMinedVeinToRecent()
+	{
+		final LocalPoint playerPosition = client.getLocalPlayer().getLocalLocation();
+		final WallObject minedVein = veins.stream()
+			.filter(vein -> vein.getLocalLocation().distanceTo(playerPosition) == 128)
+			.findFirst()
+			.orElse(null);
+
+		if (minedVein == null)
+		{
+			log.debug("Mined vein without being next to one");
+			return;
+		}
+
+		if (recentVeins.contains(minedVein))
+		{
+			//Place it last in the queue if it already exists
+			recentVeins.remove(minedVein);
+		}
+
+		recentVeins.add(minedVein);
 	}
 }
