@@ -27,13 +27,13 @@ package net.runelite.client.plugins.kittentracker;
 
 import static java.lang.Math.toIntExact;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import net.runelite.api.*;
 import net.runelite.api.events.*;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -49,7 +49,6 @@ import java.time.temporal.ChronoUnit;
 @PluginDescriptor(
 	name = "Kitten"
 )
-
 public class KittenPlugin extends Plugin
 {
 	private boolean ready;
@@ -125,7 +124,7 @@ public class KittenPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChange(VarbitChanged event)
+	public void onVarbitChanged(VarbitChanged event)
 	{
 		if (client.getVar(VarPlayer.FOLLOWER) == followerVarbit)
 		{
@@ -182,43 +181,16 @@ public class KittenPlugin extends Plugin
 
 	private void newFollower()
 	{
-		kitten = false;
-		cat = false;
+		final Feline feline = Feline.of(followerID);
 
-		if (followerID >= 1619 && followerID <= 1625)
+		if (feline == null)
 		{
-			cat = true;
-		}
-
-		if (followerID >= 1626 && followerID <= 1632)
-		{
-			lazycat = true;
-		}
-
-		if (followerID >= 5584 && followerID <= 5590)
-		{
-			wilycat = true;
-		}
-
-		if (followerID >= 5591 && followerID <= 5597)
-		{
-			kitten = true;
-		}
-
-		if (followerID >= 5598 && followerID <= 5604)
-		{
-			overgrown = true;
-		}
-
-		if (!cat & !lazycat & !wilycat & !kitten & !overgrown)
-		{
-			nonFeline = true;
-			return; // The NPC that spawned is not a feline.
+			return;
 		}
 
 		previousFeline = config.felineId();
 
-		if (kitten == true)
+		if (feline.getType() == FelineType.KITTEN)
 		{
 			if (followerID == previousFeline) // The same kitten is back!
 			{
@@ -386,36 +358,23 @@ public class KittenPlugin extends Plugin
 		}
 	}
 
-	private void addHungryTimer(int seconds)
+	private void addHungryTimer(long period, ChronoUnit unit)
 	{
-		if (seconds <= 0 )
-		{
-			return;
-		}
-
-		infoBoxManager.removeIf(t -> t instanceof KittenHungryTimer);
-		KittenHungryTimer timer = new KittenHungryTimer(itemManager.getImage(1552), this, Duration.ofSeconds(seconds));
-
+		infoBoxManager.removeIf(t -> t instanceof KittenTimer);
+		KittenTimer timer = new KittenTimer(period, unit, itemManager.getImage(ItemID.SEASONED_SARDINE), "time until your kitten leaves you for being underfed", this);
 		if (config.kittenHungryBox() & kitten == true)
 		{
-			timer.setTooltip("time until your kitten leaves you for being underfed");
 			infoBoxManager.addInfoBox(timer);
 		}
 	}
 
-	private void addAttentionTimer(int seconds)
+	private void addAttentionTimer(long period, ChronoUnit unit)
 	{
-		if (seconds <= 0 )
-		{
-			return;
-		}
-
-		infoBoxManager.removeIf(t -> t instanceof KittenAttentionTimer);
-		KittenAttentionTimer timer = new KittenAttentionTimer(itemManager.getImage(1759), this, Duration.ofSeconds(seconds));
+		infoBoxManager.removeIf(t -> t instanceof KittenTimer);
+		KittenTimer timer = new KittenTimer(period, unit, itemManager.getImage(ItemID.BALL_OF_WOOL), "Approximate time until your kitten leaves you for being neglectful", this);
 
 		if (config.kittenAttentionBox() & kitten == true)
 		{
-			timer.setTooltip("Approximate time until your kitten leaves you for being neglectful");
 			infoBoxManager.addInfoBox(timer);
 		}
 	}
@@ -423,159 +382,69 @@ public class KittenPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() == ChatMessageType.ENGINE) //Might also be gamemessage
+		if (event.getType() != ChatMessageType.GAMEMESSAGE)
 		{
-			String message = Text.removeTags(event.getMessage());
+			return;
+		}
 
-			if (message.equals("The kitten gobbles up the fish.") || message.equals("The kitten laps up the milk.") )
-			{
+		final String message = Text.removeTags(event.getMessage());
+
+		switch (message)
+		{
+			case "The kitten gobbles up the fish.":
+			case "The kitten laps up the milk.":
 				kittenFed = Instant.now();
-
-				if (config.kittenHungryBox())
-				{
-					addHungryTimer(1800);
-				}
-			}
-
-			if (message.equals("Your kitten is hungry.")) // 5 minute warning
-			{
-				if (config.kittenNotifications())
-				{
-					notifier.notify(message);
-				}
-
-				if (config.kittenHungryBox())
-				{
-					addHungryTimer(300);
-				}
-
-				kittenFed = (Instant.now().minus(25, ChronoUnit.MINUTES));
-			}
-
-			if (message.equals("Your kitten is very hungry."))
-			{
-				if (config.kittenNotifications())
-				{
-					notifier.notify(message);
-				}
-
-				if (config.kittenHungryBox())
-				{
-					addHungryTimer(120);
-				}
-
-				kittenFed = (Instant.now().minus(28, ChronoUnit.MINUTES));
-			}
-
-			if (message.equals( "Your kitten wants attention."))
-			{
-				if (config.kittenNotifications())
-				{
-					notifier.notify(message);
-				}
-
-				if (config.kittenAttentionBox())
-				{
-					addAttentionTimer(300);
-				}
-
-				kittenAttention = (Instant.now().minus(45, ChronoUnit.MINUTES));
-			}
-
-			if (message.equals("Your kitten really wants attention."))
-			{
-				if (config.kittenNotifications())
-				{
-					notifier.notify(message);
-				}
-
-				if (config.kittenAttentionBox())
-				{
-					addAttentionTimer(120);
-				}
-
-				kittenAttention = (Instant.now().minus(48, ChronoUnit.MINUTES));
-			}
-
-			if (message.equals("Your kitten got lonely and ran off."))
-			{
-				if (config.kittenNotifications())
-				{
-					notifier.notify(message);
-				}
-
-				kittenSpawned = null;
-				kittenFed = null;
-				kittenAttention = null;
-				previousFeline = 0;
-				config.felineId(0); // in case the new kitten has the same NpcID. We need to track growth progress from the beginning.
-
-				infoBoxManager.removeIf(t -> t instanceof KittenGrowthTimer);
-				infoBoxManager.removeIf(t -> t instanceof KittenHungryTimer);
-				infoBoxManager.removeIf(t -> t instanceof KittenAttentionTimer);
-				followerID = 0;
-				cat = false;
-				lazycat = false;
-				wilycat = false;
-				kitten = false;
-				overgrown = false;
-				nonFeline = false;
-			}
-
-			if (message.equals("The cat has run away.")) //shoo away option
-			{
-				if (config.kittenNotifications())
-				{
-					notifier.notify(message);
-				}
-				kittenSpawned = null;
-				kittenFed = null;
-				kittenAttention = null;
-				previousFeline = 0;
-				config.felineId(0); // in case the new kitten has the same NpcID. We need to track growth progress from the beginning.
-
-				infoBoxManager.removeIf(t -> t instanceof KittenGrowthTimer);
-				infoBoxManager.removeIf(t -> t instanceof KittenHungryTimer);
-				infoBoxManager.removeIf(t -> t instanceof KittenAttentionTimer);
-				followerID = 0;
-				cat = false;
-				lazycat = false;
-				wilycat = false;
-				kitten = false;
-				overgrown = false;
-				nonFeline = false;
-			}
+				addHungryTimer(30, ChronoUnit.MINUTES);
+				break;
+			case "Your kitten is hungry.":
+				sendNotification(message);
+				addHungryTimer(5, ChronoUnit.MINUTES);
+				break;
+			case "Your kitten is very hungry.":
+				sendNotification(message);
+				addHungryTimer(2, ChronoUnit.MINUTES);
+				break;
+			case "Your kitten wants attention.":
+				sendNotification(message);
+				addAttentionTimer(5, ChronoUnit.MINUTES);
+				break;
+			case "Your kitten really wants attention.":
+				sendNotification(message);
+				addAttentionTimer(2, ChronoUnit.MINUTES);
+				break;
+			case "Your kitten got lonely and ran off.":
+			case "The cat has run away.":
+				sendNotification(message);
+				resetKitten();
+				break;
+			default:
+				return;
 		}
 	}
 	
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		Widget playerDialog = client.getWidget(WidgetInfo.DIALOG_PLAYER_TEXT);
+		final Widget playerDialog = client.getWidget(WidgetInfo.DIALOG_PLAYER_TEXT);
 		if (playerDialog != null)
 		{
-			String playerText = Text.removeTags(playerDialog.getText()); //remove color and linebreaks
+			final String playerText = Text.removeTags(playerDialog.getText());
 			if (playerText.equals(CHAT_CAT_STROKE))
 			{
 				kittenAttention = Instant.now();
-				if (config.kittenAttentionBox())
-				{
-					addAttentionTimer(1800);
-				}
+				addAttentionTimer(30, ChronoUnit.MINUTES);
 			}
-			if (playerText.equals(CHAT_CAT_BALLOFWOOL))
+			else if (playerText.equals(CHAT_CAT_BALLOFWOOL))
 			{
 				kittenAttention = Instant.now();
-				if (config.kittenAttentionBox())
-				{
-					addAttentionTimer(3600);
-				}
+				addAttentionTimer(1, ChronoUnit.HOURS);
 			}
 		}
-		Widget notificationDialog = client.getWidget(WidgetInfo.DIALOG_NOTIFICATION_TEXT);
+
+		final Widget notificationDialog = client.getWidget(WidgetInfo.DIALOG_NOTIFICATION_TEXT);
 		if (notificationDialog != null)
 		{
-			String notificationText = Text.removeTags(notificationDialog.getText()); // remove color and linebreaks
+			final String notificationText = Text.removeTags(notificationDialog.getText());
 			if (notificationText.equals(CHAT_CAT_GROWN))
 			{
 				kitten = false;
@@ -588,6 +457,33 @@ public class KittenPlugin extends Plugin
 				infoBoxManager.removeIf(t -> t instanceof KittenGrowthTimer);
 				getFollowerID();
 			}
+		}
+	}
+
+	private void resetKitten()
+	{
+		kittenSpawned = null;
+		kittenFed = null;
+		kittenAttention = null;
+		previousFeline = 0;
+		config.felineId(0); // in case the new kitten has the same NpcID. We need to track growth progress from the beginning.
+
+		infoBoxManager.removeIf(t -> t instanceof KittenTimer);
+
+		followerID = 0;
+		cat = false;
+		lazycat = false;
+		wilycat = false;
+		kitten = false;
+		overgrown = false;
+		nonFeline = false;
+	}
+
+	private void sendNotification(String message)
+	{
+		if (config.kittenNotifications())
+		{
+			notifier.notify(message);
 		}
 	}
 
@@ -693,7 +589,7 @@ public class KittenPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChange(GameStateChanged event)
+	public void onGameStateChanged(GameStateChanged event)
 	{
 		GameState state = event.getGameState();
 		switch (state)
@@ -715,7 +611,6 @@ public class KittenPlugin extends Plugin
 		}
 	}
 
-	@Inject
 	public boolean playerHasFollower()
 	{
 		return (client.getVar(VarPlayer.FOLLOWER)) != -1;
