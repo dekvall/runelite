@@ -32,17 +32,9 @@ import java.time.temporal.ChronoUnit;
 
 class KittenGrowthTimer extends Timer
 {
-
-	private final Feline kitten;
-
-	public KittenGrowthTimer(Feline kitten, BufferedImage petImage, Plugin plugin, Duration seconds)
+	KittenGrowthTimer(long period, ChronoUnit unit, BufferedImage image, String tooltip, Plugin plugin)
 	{
-		super(seconds.toMillis(), ChronoUnit.MILLIS, petImage, plugin);
-		this.kitten = kitten;
-	}
-
-	public Feline getKitten()
-	{
-		return kitten;
+		super(period, unit, image, plugin);
+		setTooltip(tooltip);
 	}
 }
