@@ -33,15 +33,15 @@ import java.time.temporal.ChronoUnit;
 class KittenGrowthTimer extends Timer
 {
 
-	private final Felines kitten;
+	private final Feline kitten;
 
-	public KittenGrowthTimer(Felines kitten, BufferedImage petImage, Plugin plugin, Duration seconds)
+	public KittenGrowthTimer(Feline kitten, BufferedImage petImage, Plugin plugin, Duration seconds)
 	{
 		super(seconds.toMillis(), ChronoUnit.MILLIS, petImage, plugin);
 		this.kitten = kitten;
 	}
 
-	public Felines getKitten()
+	public Feline getKitten()
 	{
 		return kitten;
 	}

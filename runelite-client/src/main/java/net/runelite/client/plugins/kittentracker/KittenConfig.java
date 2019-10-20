@@ -28,12 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup(
-	keyName = "kittenConfig",
-	name = "kitten",
-	description = "Configuration for the kitten plugin"
-)
-
+@ConfigGroup("kittenTracker")
 public interface KittenConfig extends Config
 {
 	@ConfigItem(

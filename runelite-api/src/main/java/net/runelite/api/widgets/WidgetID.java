@@ -83,8 +83,6 @@ public class WidgetID
 	public static final int BA_REWARD_GROUP_ID = 497;
 	public static final int LEVEL_UP_GROUP_ID = 233;
 	public static final int DIALOG_SPRITE_GROUP_ID = 193;
-	public static final int DIALOG_PLAYER_GROUP_ID = 217;
-	public static final int DIALOG_OPTION_GROUP_ID = 219;
 	public static final int DIALOG_NOTIFICATION_GROUP_ID = 229;
 	public static final int QUEST_COMPLETED_GROUP_ID = 277;
 	public static final int CLUE_SCROLL_REWARD_GROUP_ID = 73;

@@ -357,7 +357,7 @@ public class KittenPlugin extends Plugin
 			return;
 		}
 
-		Felines feline = Felines.find(followerID);
+		Feline feline = Feline.of(followerID);
 
 		if (feline == null)
 		{
@@ -423,7 +423,7 @@ public class KittenPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() == ChatMessageType.SERVER)
+		if (event.getType() == ChatMessageType.ENGINE) //Might also be gamemessage
 		{
 			String message = Text.removeTags(event.getMessage());
 

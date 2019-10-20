@@ -24,13 +24,17 @@
  */
 package net.runelite.client.plugins.kittentracker;
 
+import com.google.common.collect.ImmutableMap;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemID;
-import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-public enum Felines
+@Getter
+@AllArgsConstructor
+public enum Feline
 {
 	//white/black
 	KITTEN_5591(5591, ItemID.PET_KITTEN),
@@ -60,34 +64,24 @@ public enum Felines
 	HELLKITTEN(5597, ItemID.HELLKITTEN),
 	HELL_CAT(1625, ItemID.HELL_CAT);
 
-	private static final Map<Integer, Felines> felines = new HashMap<>();
 	private final int id;
 	private final int itemSpriteId;
 
+	private static final Map<Integer, Feline> felines;
+
 	static
 	{
-		for (Felines cat : values())
+		ImmutableMap.Builder<Integer, Feline> builder = new ImmutableMap.Builder<>();
+
+		for (Feline feline : values())
 		{
-			felines.put(cat.getId(), cat);
+			builder.put(feline.id, feline);
 		}
+
+		felines = builder.build();
 	}
 
-	private Felines(int id, int ItemSpriteId)
-	{
-		this.id = id;
-		this.itemSpriteId = ItemSpriteId;
-	}
-
-	public int getItemSpriteId()
-	{
-		return itemSpriteId;
-	}
-	public int getId()
-	{
-		return id;
-	}
-
-	public static Felines find(int id)
+	public static Feline of(int id)
 	{
 		return felines.get(id);
 	}
