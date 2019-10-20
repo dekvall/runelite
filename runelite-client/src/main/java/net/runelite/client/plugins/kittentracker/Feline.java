@@ -1,5 +1,6 @@
-/*
+/**
  * Copyright (c) 2018, Nachtmerrie <https://github.com/Nachtmerrie>
+ * Copyright (c) 2019, dekvall <https://github.com/dekvall>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,45 +28,59 @@ package net.runelite.client.plugins.kittentracker;
 import com.google.common.collect.ImmutableMap;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ItemID;
 import java.util.Map;
+import net.runelite.api.NpcID;
 
-@Slf4j
 @Getter
 @AllArgsConstructor
 public enum Feline
 {
-	//white/black
-	KITTEN_5591(5591, ItemID.PET_KITTEN),
-	CAT_1619(1619, ItemID.PET_CAT),
+	KITTEN_WHITE_BLACK(NpcID.KITTEN_5591, ItemID.PET_KITTEN, FelineType.KITTEN),
+	CAT_WHITE_BLACK(NpcID.CAT_1619, ItemID.PET_CAT, FelineType.CAT),
+	OVERGROWN_WHITE_BLACK(NpcID.OVERGROWN_CAT, ItemID.PET_CAT_1567, FelineType.OVERGROWN),
+	LAZY_WHITE_BLACK(NpcID.LAZY_CAT, ItemID.LAZY_CAT, FelineType.LAZY),
+	WILY_WHITE_BLACK(NpcID.WILY_CAT, ItemID.WILY_CAT, FelineType.WILY),
 
-	//white
-	KITTEN_5592(5592, ItemID.PET_KITTEN_1556),
-	CAT_1620(1620, ItemID.PET_CAT_1562),
+	KITTEN_WHITE(NpcID.KITTEN_5592, ItemID.PET_KITTEN_1556, FelineType.KITTEN),
+	CAT_WHITE(NpcID.CAT_1620, ItemID.PET_CAT_1562, FelineType.CAT),
+	OVERGROWN_WHITE(NpcID.OVERGROWN_CAT_5599, ItemID.PET_CAT_1568, FelineType.OVERGROWN),
+	LAZY_WHITE(NpcID.LAZY_CAT_1627, ItemID.LAZY_CAT_6550, FelineType.LAZY),
+	WILY_WHITE(NpcID.WILY_CAT_5585, ItemID.WILY_CAT_6556, FelineType.WILY),
 
-	//brown
-	KITTEN_5593(5593, ItemID.PET_KITTEN_1557),
-	CAT_1621(1621, ItemID.PET_CAT_1563),
+	KITTEN_BROWN(NpcID.KITTEN_5593, ItemID.PET_KITTEN_1557, FelineType.KITTEN),
+	CAT_BROWN(NpcID.CAT_1621, ItemID.PET_CAT_1563, FelineType.CAT),
+	OVERGROWN_BROWN(NpcID.OVERGROWN_CAT_5600, ItemID.PET_CAT_1569, FelineType.OVERGROWN),
+	LAZY_BROWN(NpcID.LAZY_CAT_1628, ItemID.LAZY_CAT_6551, FelineType.LAZY),
+	WILY_BROWN(NpcID.WILY_CAT_5586, ItemID.WILY_CAT_6557, FelineType.WILY),
 
-	//black
-	KITTEN_5594(5594, ItemID.PET_KITTEN_1558),
-	CAT_1622(1622, ItemID.PET_CAT_1564),
+	KITTEN_BLACK(NpcID.KITTEN_5594, ItemID.PET_KITTEN_1558, FelineType.KITTEN),
+	CAT_BLACK(NpcID.CAT_1622, ItemID.PET_CAT_1564, FelineType.CAT),
+	OVERGROWN_BLACK(NpcID.OVERGROWN_CAT_5601, ItemID.PET_CAT_1570, FelineType.OVERGROWN),
+	LAZY_BLACK(NpcID.LAZY_CAT_1629, ItemID.LAZY_CAT_6552, FelineType.LAZY),
+	WILY_BLACK(NpcID.WILY_CAT_5587, ItemID.WILY_CAT_6558, FelineType.WILY),
 
-	//white/brown
-	KITTEN_5595(5595, ItemID.PET_KITTEN_1559),
-	CAT_1623(1623, ItemID.PET_CAT_1565),
+	KITTEN_WHITE_BROWN(NpcID.KITTEN_5595, ItemID.PET_KITTEN_1559, FelineType.KITTEN),
+	CAT_WHITE_BROWN(NpcID.CAT_1623, ItemID.PET_CAT_1565, FelineType.CAT),
+	OVERGROWN_WHITE_BROWN(NpcID.OVERGROWN_CAT_5602, ItemID.PET_CAT_1571, FelineType.OVERGROWN),
+	LAZY_WHITE_BROWN(NpcID.LAZY_CAT_1630, ItemID.LAZY_CAT_6553, FelineType.LAZY),
+	WILY_WHITE_BROWN(NpcID.WILY_CAT_5588, ItemID.WILY_CAT_6559, FelineType.WILY),
 
-	//white/blue
-	KITTEN_5596(5596, ItemID.PET_KITTEN_1560),
-	CAT_1624(1624, ItemID.PET_CAT_1566),
+	KITTEN_WHITE_BLUE(NpcID.KITTEN_5596, ItemID.PET_KITTEN_1560, FelineType.KITTEN),
+	CAT_WHITE_BLUE(NpcID.CAT_1624, ItemID.PET_CAT_1566, FelineType.CAT),
+	OVERGROWN_WHITE_BLUE(NpcID.OVERGROWN_CAT_5603, ItemID.PET_CAT_1572, FelineType.OVERGROWN),
+	LAZY_WHITE_BLUE(NpcID.LAZY_CAT_1631, ItemID.LAZY_CAT_6554, FelineType.LAZY),
+	WILY_WHITE_BLUE(NpcID.WILY_CAT_5589, ItemID.WILY_CAT_6560, FelineType.WILY),
 
-	//hell
-	HELLKITTEN(5597, ItemID.HELLKITTEN),
-	HELL_CAT(1625, ItemID.HELL_CAT);
+	KITTEN_HELL(NpcID.HELLKITTEN, ItemID.HELLKITTEN, FelineType.KITTEN),
+	CAT_HELL(NpcID.HELLCAT, ItemID.HELL_CAT, FelineType.CAT),
+	OVERGROWN_HELL(NpcID.OVERGROWN_HELLCAT, ItemID.OVERGROWN_HELLCAT, FelineType.OVERGROWN),
+	LAZY_HELL(NpcID.LAZY_HELLCAT, ItemID.LAZY_HELL_CAT FelineType.LAZY),
+	WILY_HELL(NpcID.WILY_HELLCAT, ItemID.WILY_HELLCAT, FelineType.WILY);
 
 	private final int id;
 	private final int itemSpriteId;
+	private FelineType type;
 
 	private static final Map<Integer, Feline> felines;
 
