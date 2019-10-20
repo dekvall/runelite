@@ -40,4 +40,33 @@ public interface DefaultWorldConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+		keyName = "storeLastWorld",
+		name = "Use most recent",
+		description = "Use the world you were last logged into as default world"
+	)
+	default boolean useRecentWorld()
+	{
+		return false;
+	}
+
+	// Stored data
+	@ConfigItem(
+		keyName = "recentWorld",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default int recentWorld()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+		keyName = "recentWorld",
+		name = "",
+		description = ""
+	)
+	void recentWorld(int key);
 }

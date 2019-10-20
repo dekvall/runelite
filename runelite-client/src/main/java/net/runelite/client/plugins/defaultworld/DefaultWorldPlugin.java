@@ -30,6 +30,7 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -75,6 +76,15 @@ public class DefaultWorldPlugin extends Plugin
 		changeWorld(worldCache);
 	}
 
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("defaultWorld"))
+		{
+			updateRecentWorld();
+		}
+	}
+
 	@Provides
 	DefaultWorldConfig getConfig(ConfigManager configManager)
 	{
@@ -91,6 +101,11 @@ public class DefaultWorldPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			updateRecentWorld();
+		}
+
 		applyWorld();
 	}
 
@@ -155,7 +170,28 @@ public class DefaultWorldPlugin extends Plugin
 			log.debug("Stored old world {}", worldCache);
 		}
 
-		final int newWorld = config.getWorld();
+		final int newWorld;
+
+		if (config.useRecentWorld() && config.recentWorld() != 0)
+		{
+			newWorld = config.recentWorld();
+		}
+		else
+		{
+			newWorld = config.getWorld();
+		}
+
 		changeWorld(newWorld);
+	}
+
+	private void updateRecentWorld()
+	{
+		final int currentWorld = client.getWorld();
+
+		if (currentWorld != config.recentWorld())
+		{
+			config.recentWorld(currentWorld);
+			log.debug("set {} to recent world", currentWorld);
+		}
 	}
 }
