@@ -1,0 +1,720 @@
+.id                 2623
+.int_stack_count    6
+.string_stack_count 0
+.int_var_count      22
+.string_var_count   2
+   iload                  4
+   cc_deleteall          
+   iload                  0                ; Is set to 0 if tooltips are hidden
+   sconst                 "spellbookHover" ; Push event name
+   runelite_callback                       ; Invoke callback
+   iconst                 0
+   if_icmpeq              LABEL6
+   jump                   LABEL7
+LABEL6:
+   return                
+LABEL7:
+   iload                  1
+   iconst                 604
+   oc_param              
+   istore                 6
+   iload                  1
+   iconst                 601
+   oc_param              
+   sstore                 0
+   iload                  1
+   iconst                 602
+   oc_param              
+   sstore                 1
+   iload                  1
+   switch                
+      9136: LABEL22
+      9124: LABEL34
+      9125: LABEL46
+      9135: LABEL22
+   jump                   LABEL52
+LABEL22:
+   get_varbit             2451
+   iconst                 1
+   if_icmpeq              LABEL26
+   jump                   LABEL33
+LABEL26:
+   sload                  1
+   sconst                 "<br>"
+   sconst                 "<col=ff0000>"
+   sconst                 "On cooldown"
+   sconst                 "</col>"
+   join_string            5
+   sstore                 1
+LABEL33:
+   jump                   LABEL52
+LABEL34:
+   get_varbit             5438
+   iconst                 0
+   if_icmpgt              LABEL38
+   jump                   LABEL45
+LABEL38:
+   sload                  1
+   sconst                 "<br>"
+   sconst                 "<col=ff0000>"
+   sconst                 "On cooldown"
+   sconst                 "</col>"
+   join_string            5
+   sstore                 1
+LABEL45:
+   jump                   LABEL52
+LABEL46:
+   get_varbit             5960
+   iconst                 1
+   if_icmpeq              LABEL50
+   jump                   LABEL52
+LABEL50:
+   sconst                 "Fertilise a farming patch with super or ultra compost, consuming 2 volcanic ash to do so."
+   sstore                 1
+LABEL52:
+   iload                  1
+   iconst                 365
+   oc_param              
+   istore                 7
+   iload                  1
+   iconst                 366
+   oc_param              
+   istore                 8
+   iload                  1
+   iconst                 367
+   oc_param              
+   istore                 9
+   iload                  1
+   iconst                 368
+   oc_param              
+   istore                 10
+   iload                  1
+   iconst                 369
+   oc_param              
+   istore                 11
+   iload                  1
+   iconst                 370
+   oc_param              
+   istore                 12
+   iload                  1
+   iconst                 606
+   oc_param              
+   istore                 13
+   iload                  1
+   iconst                 607
+   oc_param              
+   istore                 14
+   iconst                 2
+   iconst                 13
+   sconst                 "Level "
+   iload                  6
+   tostring              
+   sconst                 ": "
+   sload                  0
+   join_string            4
+   iconst                 177
+   iconst                 495
+   paraheight            
+   multiply              
+   add                   
+   istore                 15
+   iconst                 2
+   iconst                 13
+   sload                  1
+   iconst                 177
+   iconst                 494
+   paraheight            
+   multiply              
+   add                   
+   istore                 16
+   iconst                 2
+   iload                  15
+   add                   
+   iload                  16
+   add                   
+   iconst                 32
+   add                   
+   iconst                 14
+   add                   
+   iconst                 2
+   add                   
+   istore                 17
+   iload                  7
+   iconst                 -1
+   if_icmpeq              LABEL123
+   jump                   LABEL129
+LABEL123:
+   iload                  17
+   iconst                 32
+   sub                   
+   iconst                 14
+   sub                   
+   istore                 17
+LABEL129:
+   iconst                 5
+   istore                 18
+   iload                  3
+   iconst                 -1
+   if_icmpne              LABEL135
+   jump                   LABEL158
+LABEL135:
+   iload                  2
+   iload                  3
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL141
+   jump                   LABEL158
+LABEL141:
+   cc_gety               
+   iconst                 130
+   if_icmplt              LABEL145
+   jump                   LABEL157
+LABEL145:
+   iload                  5
+   iload                  17
+   sub                   
+   istore                 18
+   iload                  5
+   iconst                 261
+   if_icmpge              LABEL153
+   jump                   LABEL157
+LABEL153:
+   iload                  18
+   iconst                 5
+   sub                   
+   istore                 18
+LABEL157:
+   jump                   LABEL175
+LABEL158:
+   iload                  2
+   if_gety               
+   iconst                 130
+   if_icmplt              LABEL163
+   jump                   LABEL175
+LABEL163:
+   iload                  5
+   iload                  17
+   sub                   
+   istore                 18
+   iload                  5
+   iconst                 261
+   if_icmpge              LABEL171
+   jump                   LABEL175
+LABEL171:
+   iload                  18
+   iconst                 5
+   sub                   
+   istore                 18
+LABEL175:
+   iload                  4
+   iconst                 3
+   iconst                 0
+   cc_create             
+   iconst                 5
+   iload                  18
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+   iconst                 180
+   iload                  17
+   iconst                 0
+   iconst                 0
+   cc_setsize            
+   iconst                 1
+   cc_setfill            
+   iconst                 0
+   cc_setcolour          
+   iconst                 42
+   cc_settrans           
+   iload                  4
+   iconst                 3
+   iconst                 1
+   cc_create             
+   iconst                 6
+   iload                  18
+   iconst                 1
+   add                   
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+   iconst                 179
+   iload                  17
+   iconst                 1
+   sub                   
+   iconst                 0
+   iconst                 0
+   cc_setsize            
+   iconst                 0
+   cc_setfill            
+   iconst                 3025699
+   cc_setcolour          
+   iload                  4
+   iconst                 3
+   iconst                 2
+   cc_create             
+   iconst                 5
+   iload                  18
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+   iconst                 179
+   iload                  17
+   iconst                 1
+   sub                   
+   iconst                 0
+   iconst                 0
+   cc_setsize            
+   iconst                 0
+   cc_setfill            
+   iconst                 7496785
+   cc_setcolour          
+   iload                  4
+   iconst                 4
+   iconst                 3
+   cc_create             
+   iconst                 7
+   iload                  18
+   iconst                 2
+   add                   
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+   iconst                 177
+   iload                  15
+   iconst                 0
+   iconst                 0
+   cc_setsize            
+   iconst                 1
+   iconst                 1
+   iconst                 0
+   cc_settextalign       
+   iconst                 495
+   cc_settextfont        
+   iconst                 16750623
+   cc_setcolour          
+   iconst                 0
+   cc_settextshadow      
+   sconst                 "Level "
+   iload                  6
+   tostring              
+   sconst                 ": "
+   sload                  0
+   join_string            4
+   cc_settext            
+   iload                  4
+   iconst                 4
+   iconst                 4
+   cc_create             
+   iconst                 7
+   iload                  18
+   iconst                 2
+   add                   
+   iload                  15
+   add                   
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+   iconst                 177
+   iload                  16
+   iconst                 0
+   iconst                 0
+   cc_setsize            
+   iconst                 1
+   iconst                 1
+   iconst                 0
+   cc_settextalign       
+   iconst                 494
+   cc_settextfont        
+   iconst                 11495962
+   cc_setcolour          
+   iconst                 0
+   cc_settextshadow      
+   sload                  1
+   cc_settext            
+   iconst                 1
+   istore                 19
+   iload                  9
+   iconst                 -1
+   if_icmpne              LABEL306
+   jump                   LABEL308
+LABEL306:
+   iconst                 2
+   istore                 19
+LABEL308:
+   iload                  11
+   iconst                 -1
+   if_icmpne              LABEL312
+   jump                   LABEL314
+LABEL312:
+   iconst                 3
+   istore                 19
+LABEL314:
+   iload                  13
+   iconst                 -1
+   if_icmpne              LABEL318
+   jump                   LABEL320
+LABEL318:
+   iconst                 4
+   istore                 19
+LABEL320:
+   iconst                 190
+   iload                  19
+   iconst                 35
+   multiply              
+   sub                   
+   iload                  19
+   iconst                 1
+   add                   
+   div                   
+   istore                 20
+   iconst                 0
+   istore                 21
+   iload                  7
+   iconst                 -1
+   if_icmpne              LABEL336
+   jump                   LABEL408
+LABEL336:
+   iload                  4
+   iconst                 5
+   iconst                 5
+   cc_create             
+   iload                  20
+   iload                  18
+   iconst                 2
+   add                   
+   iload                  15
+   add                   
+   iload                  16
+   add                   
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+   iconst                 35
+   iconst                 32
+   iconst                 0
+   iconst                 0
+   cc_setsize            
+   iload                  7
+   iconst                 -1
+   cc_setobject          
+   iload                  4
+   iconst                 4
+   iconst                 6
+   cc_create             
+   iload                  20
+   iload                  18
+   iconst                 2
+   add                   
+   iload                  15
+   add                   
+   iload                  16
+   add                   
+   iconst                 32
+   add                   
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+   iconst                 35
+   iconst                 14
+   iconst                 0
+   iconst                 0
+   cc_setsize            
+   iconst                 1
+   iconst                 1
+   iconst                 0
+   cc_settextalign       
+   iconst                 494
+   cc_settextfont        
+   iload                  7
+   invoke                 19
+   istore                 21
+   iload                  21
+   iload                  8
+   if_icmpge              LABEL394
+   jump                   LABEL397
+LABEL394:
+   iconst                 65280
+   cc_setcolour          
+   jump                   LABEL399
+LABEL397:
+   iconst                 16711680
+   cc_setcolour          
+LABEL399:
+   iconst                 0
+   cc_settextshadow      
+   iload                  21
+   invoke                 20
+   sconst                 "/"
+   iload                  8
+   tostring              
+   join_string            3
+   cc_settext            
+LABEL408:
+   iload                  9
+   iconst                 -1
+   if_icmpne              LABEL412
+   jump                   LABEL492
+LABEL412:
+   iload                  4
+   iconst                 5
+   iconst                 7
+   cc_create             
+   iload                  20
+   iconst                 2
+   multiply              
+   iconst                 35
+   add                   
+   iload                  18
+   iconst                 2
+   add                   
+   iload                  15
+   add                   
+   iload                  16
+   add                   
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+   iconst                 35
+   iconst                 32
+   iconst                 0
+   iconst                 0
+   cc_setsize            
+   iload                  9
+   iconst                 -1
+   cc_setobject          
+   iload                  4
+   iconst                 4
+   iconst                 8
+   cc_create             
+   iload                  20
+   iconst                 2
+   multiply              
+   iconst                 35
+   add                   
+   iload                  18
+   iconst                 2
+   add                   
+   iload                  15
+   add                   
+   iload                  16
+   add                   
+   iconst                 32
+   add                   
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+   iconst                 35
+   iconst                 14
+   iconst                 0
+   iconst                 0
+   cc_setsize            
+   iconst                 1
+   iconst                 1
+   iconst                 0
+   cc_settextalign       
+   iconst                 494
+   cc_settextfont        
+   iload                  9
+   invoke                 19
+   istore                 21
+   iload                  21
+   iload                  10
+   if_icmpge              LABEL478
+   jump                   LABEL481
+LABEL478:
+   iconst                 65280
+   cc_setcolour          
+   jump                   LABEL483
+LABEL481:
+   iconst                 16711680
+   cc_setcolour          
+LABEL483:
+   iconst                 0
+   cc_settextshadow      
+   iload                  21
+   invoke                 20
+   sconst                 "/"
+   iload                  10
+   tostring              
+   join_string            3
+   cc_settext            
+LABEL492:
+   iload                  11
+   iconst                 -1
+   if_icmpne              LABEL496
+   jump                   LABEL576
+LABEL496:
+   iload                  4
+   iconst                 5
+   iconst                 9
+   cc_create             
+   iload                  20
+   iconst                 3
+   multiply              
+   iconst                 70
+   add                   
+   iload                  18
+   iconst                 2
+   add                   
+   iload                  15
+   add                   
+   iload                  16
+   add                   
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+   iconst                 35
+   iconst                 32
+   iconst                 0
+   iconst                 0
+   cc_setsize            
+   iload                  11
+   iconst                 -1
+   cc_setobject          
+   iload                  4
+   iconst                 4
+   iconst                 10
+   cc_create             
+   iload                  20
+   iconst                 3
+   multiply              
+   iconst                 70
+   add                   
+   iload                  18
+   iconst                 2
+   add                   
+   iload                  15
+   add                   
+   iload                  16
+   add                   
+   iconst                 32
+   add                   
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+   iconst                 35
+   iconst                 14
+   iconst                 0
+   iconst                 0
+   cc_setsize            
+   iconst                 1
+   iconst                 1
+   iconst                 0
+   cc_settextalign       
+   iconst                 494
+   cc_settextfont        
+   iload                  11
+   invoke                 19
+   istore                 21
+   iload                  21
+   iload                  12
+   if_icmpge              LABEL562
+   jump                   LABEL565
+LABEL562:
+   iconst                 65280
+   cc_setcolour          
+   jump                   LABEL567
+LABEL565:
+   iconst                 16711680
+   cc_setcolour          
+LABEL567:
+   iconst                 0
+   cc_settextshadow      
+   iload                  21
+   invoke                 20
+   sconst                 "/"
+   iload                  12
+   tostring              
+   join_string            3
+   cc_settext            
+LABEL576:
+   iload                  13
+   iconst                 -1
+   if_icmpne              LABEL580
+   jump                   LABEL660
+LABEL580:
+   iload                  4
+   iconst                 5
+   iconst                 11
+   cc_create             
+   iload                  20
+   iconst                 4
+   multiply              
+   iconst                 105
+   add                   
+   iload                  18
+   iconst                 2
+   add                   
+   iload                  15
+   add                   
+   iload                  16
+   add                   
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+   iconst                 35
+   iconst                 32
+   iconst                 0
+   iconst                 0
+   cc_setsize            
+   iload                  13
+   iconst                 -1
+   cc_setobject          
+   iload                  4
+   iconst                 4
+   iconst                 12
+   cc_create             
+   iload                  20
+   iconst                 4
+   multiply              
+   iconst                 105
+   add                   
+   iload                  18
+   iconst                 2
+   add                   
+   iload                  15
+   add                   
+   iload                  16
+   add                   
+   iconst                 32
+   add                   
+   iconst                 0
+   iconst                 0
+   cc_setposition        
+   iconst                 35
+   iconst                 14
+   iconst                 0
+   iconst                 0
+   cc_setsize            
+   iconst                 1
+   iconst                 1
+   iconst                 0
+   cc_settextalign       
+   iconst                 494
+   cc_settextfont        
+   iload                  13
+   invoke                 19
+   istore                 21
+   iload                  21
+   iload                  14
+   if_icmpge              LABEL646
+   jump                   LABEL649
+LABEL646:
+   iconst                 65280
+   cc_setcolour          
+   jump                   LABEL651
+LABEL649:
+   iconst                 16711680
+   cc_setcolour          
+LABEL651:
+   iconst                 0
+   cc_settextshadow      
+   iload                  21
+   invoke                 20
+   sconst                 "/"
+   iload                  14
+   tostring              
+   join_string            3
+   cc_settext            
+LABEL660:
+   return                
