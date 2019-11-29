@@ -32,6 +32,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
@@ -56,6 +57,7 @@ import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -133,6 +135,7 @@ public class ClientUI
 	private NavigationButton sidebarNavigationButton;
 	private JButton sidebarNavigationJButton;
 	private Dimension lastClientSize;
+	private JScrollPane pluginButtons;
 
 	@Inject
 	private ClientUI(
@@ -328,7 +331,9 @@ public class ClientUI
 
 			container = new JPanel();
 			container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
-			container.add(new ClientPanel(client));
+			JPanel clientPanel = new ClientPanel(client);
+			JScrollPane pane = new JScrollPane(clientPanel);
+			container.add(pane);
 
 			navContainer = new JPanel();
 			navContainer.setLayout(cardLayout);
@@ -338,10 +343,16 @@ public class ClientUI
 
 			// To reduce substance's colorization (tinting)
 			navContainer.putClientProperty(SubstanceSynapse.COLORIZATION_FACTOR, 1.0);
+
 			container.add(navContainer);
 
 			pluginToolbar = new ClientPluginToolbar();
 			titleToolbar = new ClientTitleToolbar();
+
+			pluginButtons = new JScrollPane(pluginToolbar);
+			pluginButtons.setMaximumSize(pluginToolbar.getMaximumSize());
+			pluginButtons.setMinimumSize(new Dimension(pluginToolbar.getWidth(), 0));
+
 			frame.add(container);
 
 			// Add key listener
@@ -714,7 +725,7 @@ public class ClientUI
 			contract();
 
 			// Remove plugin toolbar
-			container.remove(pluginToolbar);
+			container.remove(pluginButtons);
 		}
 		else
 		{
@@ -725,7 +736,7 @@ public class ClientUI
 			expand(currentNavButton);
 
 			// Add plugin toolbar back
-			container.add(pluginToolbar);
+			container.add(pluginButtons);
 		}
 
 		// Revalidate sizes of affected Swing components
