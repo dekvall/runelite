@@ -438,7 +438,14 @@ public class HiscorePanel extends PluginPanel
 
 				if (level != -1)
 				{
-					label.setText(Integer.toString(level));
+					String levelText = Integer.toString(level);
+
+					if (exp == Experience.MAX_SKILL_XP)
+					{
+						levelText += "*";
+					}
+
+					label.setText(levelText);
 				}
 			}
 
