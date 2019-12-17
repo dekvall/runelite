@@ -181,7 +181,7 @@ public class WorldPoint
 			int rotation = templateChunk >> 1 & 0x3;
 			int templateChunkY = (templateChunk >> 3 & 0x7FF) * CHUNK_SIZE;
 			int templateChunkX = (templateChunk >> 14 & 0x3FF) * CHUNK_SIZE;
-			int plane = templateChunk >> 24 & 0x3;
+			int plane = templateChunk >> 25 & 0x3;
 
 			// calculate world point of the template
 			int x = templateChunkX + (sceneX & (CHUNK_SIZE - 1));
