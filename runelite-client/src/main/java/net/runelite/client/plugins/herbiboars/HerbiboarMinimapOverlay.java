@@ -52,29 +52,30 @@ public class HerbiboarMinimapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.isTrailShown() && plugin.isInHerbiboarArea())
+		if (!config.isTrailShown() || !plugin.isInHerbiboarArea())
 		{
-			HerbiboarTrail currentTrail = plugin.getCurrentTrail();
-			int finishId = plugin.getFinishId();
-			Set<Integer> shownTrailIds = plugin.getShownTrails();
-
-			for (TileObject tileObject : plugin.getTrails().values())
-			{
-				int id = tileObject.getId();
-				Point minimapLocation = tileObject.getMinimapLocation();
-
-				if (minimapLocation == null)
-				{
-					continue;
-				}
-
-				if (shownTrailIds.contains(id) && (finishId > 0 || (currentTrail != null && currentTrail.getTrailId() != id && currentTrail.getTrailId() + 1 != id)))
-				{
-					OverlayUtil.renderMinimapLocation(graphics, minimapLocation, config.getTrailColor());
-				}
-			}
+			return null;
 		}
 
+		TrailToSpot nextTrail = plugin.getNextTrail();
+		int finishId = plugin.getFinishId();
+		Set<Integer> shownTrailIds = plugin.getShownTrails();
+
+		for (TileObject tileObject : plugin.getTrails().values())
+		{
+			int id = tileObject.getId();
+			Point minimapLocation = tileObject.getMinimapLocation();
+
+			if (minimapLocation == null)
+			{
+				continue;
+			}
+
+			if (shownTrailIds.contains(id) && (finishId > 0 || nextTrail != null && !nextTrail.getFootprintIds().contains(id)))
+			{
+				OverlayUtil.renderMinimapLocation(graphics, minimapLocation, config.getTrailColor());
+			}
+		}
 		return null;
 	}
 }

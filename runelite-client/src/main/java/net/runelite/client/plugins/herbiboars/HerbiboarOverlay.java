@@ -59,12 +59,12 @@ class HerbiboarOverlay extends Overlay
 			return null;
 		}
 
-		HerbiboarTrail currentTrail = plugin.getCurrentTrail();
-
+		HerbiboarSearchSpot.Group currentGroup = plugin.getCurrentGroup();
+		TrailToSpot nextTrail = plugin.getNextTrail();
 		int finishId = plugin.getFinishId();
 
 		// Draw start objects
-		if (config.isStartShown() && (currentTrail == null && finishId == 0))
+		if (config.isStartShown() && (currentGroup == null && finishId == 0))
 		{
 			plugin.getStarts().values().forEach((obj) ->
 			{
@@ -79,7 +79,7 @@ class HerbiboarOverlay extends Overlay
 			plugin.getTrails().values().forEach((x) ->
 			{
 				int id = x.getId();
-				if (shownTrailIds.contains(id) && (finishId > 0 || (currentTrail != null && currentTrail.getTrailId() != id && currentTrail.getTrailId() + 1 != id)))
+				if (shownTrailIds.contains(id) && (finishId > 0 || nextTrail != null && !nextTrail.getFootprintIds().contains(id)))
 				{
 					OverlayUtil.renderTileOverlay(graphics, x, "", config.getTrailColor());
 				}
@@ -87,37 +87,27 @@ class HerbiboarOverlay extends Overlay
 		}
 
 		// Draw trail objects (mushrooms, mud, etc)
-		if (config.isObjectShown() && currentTrail != null)
+		if (config.isObjectShown() && !(finishId > 0 || currentGroup == null))
 		{
-			int currentPath = plugin.getCurrentPath();
-			WorldPoint[] trailLocs = currentTrail.getObjectLocs(currentPath);
-			for (WorldPoint trailLoc : trailLocs)
-			{
-				if (trailLoc == null)
-				{
-					continue;
-				}
+			int pathIndex = plugin.getCurrentPath().size() - 1;
+			WorldPoint correct = HerbiboarRotation.extractLocation(plugin.getRelevantRotations(), pathIndex);
 
-				TileObject object = plugin.getTrailObjects().get(trailLoc);
-				if (object != null)
+			Color clickBoxColor = new Color(255, 0, 255, 20);
+
+			if (correct != null)
+			{
+				TileObject object = plugin.getTrailObjects().get(correct);
+				drawObjectLocation(graphics, object, clickBoxColor, config.getObjectColor());
+			}
+			else
+			{
+				for (WorldPoint trailLoc : HerbiboarSearchSpot.getGroupLocations(plugin.getCurrentGroup()))
 				{
-					if (config.showClickBoxes())
-					{
-						Shape clickbox = object.getClickbox();
-						if (clickbox != null)
-						{
-							graphics.setColor(config.getObjectColor());
-							graphics.draw(clickbox);
-							graphics.setColor(new Color(255, 0, 255, 20));
-							graphics.fill(clickbox);
-						}
-					}
-					else
-					{
-						OverlayUtil.renderTileOverlay(graphics, object, "", config.getObjectColor());
-					}
+					TileObject object = plugin.getTrailObjects().get(trailLoc);
+					drawObjectLocation(graphics, object, clickBoxColor, config.getObjectColor());
 				}
 			}
+
 		}
 
 		// Draw finish tunnels
@@ -125,27 +115,35 @@ class HerbiboarOverlay extends Overlay
 		{
 			WorldPoint finishLoc = plugin.getEndLocations().get(finishId - 1);
 			TileObject object = plugin.getTunnels().get(finishLoc);
-			if (object != null)
-			{
-				if (config.showClickBoxes())
-				{
-					Shape clickbox = object.getClickbox();
-					if (clickbox != null)
-					{
-						Color col = config.getObjectColor();
-						graphics.setColor(col);
-						graphics.draw(clickbox);
-						graphics.setColor(new Color(col.getRed(), col.getGreen(), col.getBlue(), 20));
-						graphics.fill(clickbox);
-					}
-				}
-				else
-				{
-					OverlayUtil.renderTileOverlay(graphics, object, "", config.getTunnelColor());
-				}
-			}
+			Color col = config.getObjectColor();
+			Color clickBoxColor = new Color(col.getRed(), col.getGreen(), col.getBlue(), 20);
+			drawObjectLocation(graphics, object, clickBoxColor , config.getTunnelColor());
 		}
 
 		return null;
+	}
+
+	void drawObjectLocation(Graphics2D graphics, TileObject object, Color clickBoxcolor, Color tileColor)
+	{
+		if (object == null)
+		{
+			return;
+		}
+
+		if (config.showClickBoxes())
+		{
+			Shape clickbox = object.getClickbox();
+			if (clickbox != null)
+			{
+				graphics.setColor(config.getObjectColor());
+				graphics.draw(clickbox);
+				graphics.setColor(clickBoxcolor);
+				graphics.fill(clickbox);
+			}
+		}
+		else
+		{
+			OverlayUtil.renderTileOverlay(graphics, object, "", tileColor);
+		}
 	}
 }
