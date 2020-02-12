@@ -35,6 +35,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -103,6 +104,7 @@ public class ClientUI
 	private static final String CONFIG_GROUP = "runelite";
 	private static final String CONFIG_CLIENT_BOUNDS = "clientBounds";
 	private static final String CONFIG_CLIENT_MAXIMIZED = "clientMaximized";
+	private static final String CONFIG_CLIENT_FULLSCREEN = "fullscreenMode";
 	private static final int CLIENT_WELL_HIDDEN_MARGIN = 160;
 	private static final int CLIENT_WELL_HIDDEN_MARGIN_TOP = 10;
 	public static final BufferedImage ICON = ImageUtil.getResourceStreamFromClass(ClientUI.class, "/runelite.png");
@@ -156,12 +158,14 @@ public class ClientUI
 	{
 		if (!event.getGroup().equals("runelite") ||
 			event.getKey().equals(CONFIG_CLIENT_MAXIMIZED) ||
-			event.getKey().equals(CONFIG_CLIENT_BOUNDS))
+			event.getKey().equals(CONFIG_CLIENT_BOUNDS) ||
+			!event.getKey().equals(CONFIG_CLIENT_FULLSCREEN))
 		{
 			return;
 		}
 
-		SwingUtilities.invokeLater(() -> updateFrameConfig(event.getKey().equals("lockWindowSize")));
+		SwingUtilities.invokeLater(() -> setFullscreen(event.getNewValue().equals("true")));
+		//SwingUtilities.invokeLater(() -> updateFrameConfig(event.getKey().equals("lockWindowSize")));
 	}
 
 	@Subscribe
@@ -526,6 +530,24 @@ public class ClientUI
 		}
 	}
 
+	private void setFullscreen(boolean fullScreen)
+	{
+		GraphicsDevice myDevice = frame.getGraphicsConfiguration().getDevice();
+		if (!myDevice.isFullScreenSupported ())
+		{
+			throw new UnsupportedOperationException ("Fullscreen mode is unsupported.");
+		}
+
+		if (fullScreen)
+		{
+			myDevice.setFullScreenWindow (frame);
+		}
+		else
+		{
+			myDevice.setFullScreenWindow (null);
+		}
+
+	}
 	private boolean showWarningOnExit()
 	{
 		if (config.warningOnExit() == WarningOnExit.ALWAYS)

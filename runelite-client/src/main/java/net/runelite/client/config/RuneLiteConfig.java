@@ -288,4 +288,15 @@ public interface RuneLiteConfig extends Config
 	{
 		return 35;
 	}
+
+	@ConfigItem(
+		keyName = "fullscreenMode",
+		name = "Fullscreen",
+		description = "Fullscreen, requires custom chrome to be turned off",
+		position = 43
+	)
+	default boolean fullscreenMode()
+	{
+		return false;
+	}
 }
