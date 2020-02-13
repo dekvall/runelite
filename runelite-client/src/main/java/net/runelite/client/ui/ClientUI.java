@@ -158,14 +158,22 @@ public class ClientUI
 	{
 		if (!event.getGroup().equals("runelite") ||
 			event.getKey().equals(CONFIG_CLIENT_MAXIMIZED) ||
-			event.getKey().equals(CONFIG_CLIENT_BOUNDS) ||
-			!event.getKey().equals(CONFIG_CLIENT_FULLSCREEN))
+			event.getKey().equals(CONFIG_CLIENT_BOUNDS))
 		{
 			return;
 		}
 
-		SwingUtilities.invokeLater(() -> setFullscreen(event.getNewValue().equals("true")));
-		//SwingUtilities.invokeLater(() -> updateFrameConfig(event.getKey().equals("lockWindowSize")));
+		switch (event.getKey())
+		{
+			case "lockWindowSize":
+				SwingUtilities.invokeLater(() -> updateFrameConfig(true));
+				break;
+			case "fullscreenMode":
+				SwingUtilities.invokeLater(() -> setFullscreen(event.getNewValue().equals("true")));
+				break;
+			default:
+				return;
+		}
 	}
 
 	@Subscribe
@@ -518,6 +526,7 @@ public class ClientUI
 			requestFocus();
 			giveClientFocus();
 			log.info("Showing frame {}", frame);
+			setFullscreen(configManager.getConfiguration(CONFIG_GROUP, CONFIG_CLIENT_FULLSCREEN, Boolean.class));
 		});
 
 		// Show out of date dialog if needed
@@ -532,22 +541,17 @@ public class ClientUI
 
 	private void setFullscreen(boolean fullScreen)
 	{
-		GraphicsDevice myDevice = frame.getGraphicsConfiguration().getDevice();
-		if (!myDevice.isFullScreenSupported ())
-		{
-			throw new UnsupportedOperationException ("Fullscreen mode is unsupported.");
-		}
+		GraphicsDevice graphicsDevice = getGraphicsConfiguration().getDevice();
 
-		if (fullScreen)
+		if (!graphicsDevice.isFullScreenSupported() && fullScreen)
 		{
-			myDevice.setFullScreenWindow (frame);
+			log.warn("Fullscreen mode is not supported");
+			configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_FULLSCREEN, false);
+			return;
 		}
-		else
-		{
-			myDevice.setFullScreenWindow (null);
-		}
-
+		graphicsDevice.setFullScreenWindow(fullScreen ? frame : null);
 	}
+
 	private boolean showWarningOnExit()
 	{
 		if (config.warningOnExit() == WarningOnExit.ALWAYS)
