@@ -32,6 +32,17 @@ import net.runelite.client.config.ConfigItem;
 public interface MusicConfig extends Config
 {
 	@ConfigItem(
+		keyName = "continuousSliders",
+		name = "Continuous sliders",
+		description = "Make the volume sliders not snap",
+		position = 0
+	)
+	default boolean continuousSliders()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "muteOwnAreaSounds",
 		name = "Mute player area sounds",
 		description = "Mute area sounds caused by yourself",

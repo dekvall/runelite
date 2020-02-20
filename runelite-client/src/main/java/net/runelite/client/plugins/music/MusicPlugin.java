@@ -449,6 +449,11 @@ public class MusicPlugin extends Plugin
 
 	private void updateMusicOptions()
 	{
+		if (!musicConfig.continuousSliders())
+		{
+			return;
+		}
+
 		for (MusicSlider slider : MusicSlider.values())
 		{
 			Widget icon = client.getWidget(slider.getWidgetID());
