@@ -24,17 +24,21 @@
  */
 package net.runelite.client.plugins.ammo;
 
+import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -47,6 +51,8 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 )
 public class AmmoPlugin extends Plugin
 {
+	static final String CONFIG_GROUP = "ammo";
+
 	@Inject
 	private Client client;
 
@@ -59,20 +65,21 @@ public class AmmoPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
+	@Inject
+	private AmmoConfig config;
+
+	@Provides
+	AmmoConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(AmmoConfig.class);
+	}
+
 	private AmmoCounter counterBox;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		clientThread.invokeLater(() ->
-		{
-			final ItemContainer container = client.getItemContainer(InventoryID.EQUIPMENT);
-
-			if (container != null)
-			{
-				checkInventory(container.getItems());
-			}
-		});
+		applyConfig();
 	}
 
 	@Override
@@ -81,6 +88,16 @@ public class AmmoPlugin extends Plugin
 		infoBoxManager.removeInfoBox(counterBox);
 		counterBox = null;
 	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals(CONFIG_GROUP))
+		{
+			applyConfig();
+		}
+	}
+
 
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
@@ -136,7 +153,17 @@ public class AmmoPlugin extends Plugin
 
 		removeInfobox();
 		final BufferedImage image = itemManager.getImage(item.getId(), 5, false);
-		counterBox = new AmmoCounter(this, item.getId(), item.getQuantity(), comp.getName(), image);
+		int quantity;
+		if (config.theoreticalAmmoCount())
+		{
+			quantity = (int) ((float) item.getQuantity() / (1 - .72f));
+		}
+		else
+		{
+			quantity = item.getQuantity();
+		}
+
+		counterBox = new AmmoCounter(this, item.getId(), quantity, comp.getName(), image);
 		infoBoxManager.addInfoBox(counterBox);
 	}
 
@@ -144,5 +171,18 @@ public class AmmoPlugin extends Plugin
 	{
 		infoBoxManager.removeInfoBox(counterBox);
 		counterBox = null;
+	}
+
+	private void applyConfig()
+	{
+		clientThread.invokeLater(() ->
+		{
+			final ItemContainer container = client.getItemContainer(InventoryID.EQUIPMENT);
+
+			if (container != null)
+			{
+				checkInventory(container.getItems());
+			}
+		});
 	}
 }
