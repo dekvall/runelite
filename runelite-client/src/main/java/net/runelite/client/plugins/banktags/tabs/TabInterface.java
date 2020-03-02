@@ -69,6 +69,7 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.api.widgets.JavaScriptCallback;
@@ -79,6 +80,7 @@ import net.runelite.api.widgets.WidgetSizeMode;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.chatbox.ChatboxItemSearch;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
@@ -228,12 +230,36 @@ public class TabInterface
 		activateTab(null);
 		scrollTab(0);
 
-		if (config.rememberTab() && !Strings.isNullOrEmpty(config.tab()))
+		if (config.rememberTab())
 		{
-			// the server will resync the last opened vanilla tab when the bank is opened
-			client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
-			openTag(config.tab());
+			resyncTab();
 		}
+	}
+
+	@Subscribe
+	public void onVarClientIntChnaged(VarClientIntChanged event)
+	{
+		if (event.getIndex() != VarClientInt.WORN_ITEMS_TAB_BANK.getIndex())
+		{
+			return;
+		}
+
+		if (client.getVar(VarClientInt.WORN_ITEMS_TAB_BANK) == 0)
+		{
+			resyncTab();
+		}
+	}
+
+	private void resyncTab()
+	{
+		if (Strings.isNullOrEmpty(config.tab()))
+		{
+			return;
+		}
+
+		// the server will resync the last opened vanilla tab when the bank is opened
+		client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
+		openTag(config.tab());
 	}
 
 	private void handleDeposit(MenuOptionClicked event, Boolean inventory)
