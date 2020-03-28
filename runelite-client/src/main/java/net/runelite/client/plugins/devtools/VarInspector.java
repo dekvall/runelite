@@ -43,6 +43,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.CompoundBorder;
 import lombok.Getter;
@@ -200,7 +201,7 @@ class VarInspector extends JFrame
 				));
 				tracker.add(header);
 			}
-			tracker.add(new JLabel(String.format("%s %s changed: %s -> %s", type.getName(), name, old, neew)));
+			tracker.add(new JTextField(String.format("%s %s changed: %s -> %s", type.getName(), name, old, neew)));
 
 			// Cull very old stuff
 			for (; tracker.getComponentCount() > MAX_LOG_ENTRIES; )
