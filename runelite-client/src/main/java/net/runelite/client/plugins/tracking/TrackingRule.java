@@ -23,54 +23,54 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.herbiboars;
+package net.runelite.client.plugins.tracking;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-enum HerbiboarRule
+enum TrackingRule
 {
-	A_SOUTH(HerbiboarSearchSpot.Group.A, HerbiboarStart.MIDDLE),
-	C_WEST(HerbiboarSearchSpot.Group.C, HerbiboarStart.MIDDLE),
-	D_WEST_1(HerbiboarSearchSpot.Group.D, HerbiboarStart.MIDDLE),
-	D_WEST_2(HerbiboarSearchSpot.Group.D, HerbiboarSearchSpot.Group.C),
-	E_NORTH(HerbiboarSearchSpot.Group.E, HerbiboarSearchSpot.Group.A),
-	F_EAST(HerbiboarSearchSpot.Group.F, HerbiboarSearchSpot.Group.G),
-	G_NORTH(HerbiboarSearchSpot.Group.G, HerbiboarSearchSpot.Group.F),
-	H_NORTH(HerbiboarSearchSpot.Group.H, HerbiboarSearchSpot.Group.D),
-	H_EAST(HerbiboarSearchSpot.Group.H, HerbiboarStart.DRIFTWOOD),
-	I_EAST(HerbiboarSearchSpot.Group.I, HerbiboarStart.LEPRECHAUN),
-	I_SOUTH_1(HerbiboarSearchSpot.Group.I, HerbiboarStart.GHOST_MUSHROOM),
-	I_SOUTH_2(HerbiboarSearchSpot.Group.I, HerbiboarStart.CAMP_ENTRANCE),
-	I_WEST(HerbiboarSearchSpot.Group.I, HerbiboarSearchSpot.Group.E),
+	A_SOUTH(TrackingSearchSpot.Group.A, TrackingStart.MIDDLE),
+	C_WEST(TrackingSearchSpot.Group.C, TrackingStart.MIDDLE),
+	D_WEST_1(TrackingSearchSpot.Group.D, TrackingStart.MIDDLE),
+	D_WEST_2(TrackingSearchSpot.Group.D, TrackingSearchSpot.Group.C),
+	E_NORTH(TrackingSearchSpot.Group.E, TrackingSearchSpot.Group.A),
+	F_EAST(TrackingSearchSpot.Group.F, TrackingSearchSpot.Group.G),
+	G_NORTH(TrackingSearchSpot.Group.G, TrackingSearchSpot.Group.F),
+	H_NORTH(TrackingSearchSpot.Group.H, TrackingSearchSpot.Group.D),
+	H_EAST(TrackingSearchSpot.Group.H, TrackingStart.DRIFTWOOD),
+	I_EAST(TrackingSearchSpot.Group.I, TrackingStart.LEPRECHAUN),
+	I_SOUTH_1(TrackingSearchSpot.Group.I, TrackingStart.GHOST_MUSHROOM),
+	I_SOUTH_2(TrackingSearchSpot.Group.I, TrackingStart.CAMP_ENTRANCE),
+	I_WEST(TrackingSearchSpot.Group.I, TrackingSearchSpot.Group.E),
 	;
 
-	private final HerbiboarSearchSpot.Group to;
-	private final HerbiboarStart fromStart;
-	private final HerbiboarSearchSpot.Group fromGroup;
+	private final TrackingSearchSpot.Group to;
+	private final TrackingStart fromStart;
+	private final TrackingSearchSpot.Group fromGroup;
 
-	HerbiboarRule(HerbiboarSearchSpot.Group to, HerbiboarSearchSpot.Group from)
+	TrackingRule(TrackingSearchSpot.Group to, TrackingSearchSpot.Group from)
 	{
 		this(to, null, from);
 	}
 
-	HerbiboarRule(HerbiboarSearchSpot.Group to, HerbiboarStart fromStart)
+	TrackingRule(TrackingSearchSpot.Group to, TrackingStart fromStart)
 	{
 		this(to, fromStart, null);
 	}
 
 	/**
-	 * Returns whether the next {@link HerbiboarSearchSpot} can be deterministically selected based on the starting
+	 * Returns whether the next {@link TrackingSearchSpot} can be deterministically selected based on the starting
 	 * location and the path taken so far, based on the rules defined on the OSRS wiki.
 	 *
 	 * {@see https://oldschool.runescape.wiki/w/Herbiboar#Guaranteed_tracks}
 	 *
 	 * @param start       Herbiboar's starting spot where the tracking path begins
-	 * @param currentPath A list of {@link HerbiboarSearchSpot}s which have been searched thus far, and the next one to search
+	 * @param currentPath A list of {@link TrackingSearchSpot}s which have been searched thus far, and the next one to search
 	 * @return {@code true} if a rule can be applied, {@code false} otherwise
 	 */
-	static boolean canApplyRule(HerbiboarStart start, List<HerbiboarSearchSpot> currentPath)
+	static boolean canApplyRule(TrackingStart start, List<TrackingSearchSpot> currentPath)
 	{
 		if (start == null || currentPath.isEmpty())
 		{
@@ -78,9 +78,9 @@ enum HerbiboarRule
 		}
 
 		int lastIndex = currentPath.size() - 1;
-		HerbiboarSearchSpot.Group goingTo = currentPath.get(lastIndex).getGroup();
+		TrackingSearchSpot.Group goingTo = currentPath.get(lastIndex).getGroup();
 
-		for (HerbiboarRule rule : values())
+		for (TrackingRule rule : values())
 		{
 			if (lastIndex > 0 && rule.matches(currentPath.get(lastIndex - 1).getGroup(), goingTo)
 			|| lastIndex == 0 && rule.matches(start, goingTo))
@@ -92,17 +92,17 @@ enum HerbiboarRule
 		return false;
 	}
 
-	boolean matches(HerbiboarStart from, HerbiboarSearchSpot.Group to)
+	boolean matches(TrackingStart from, TrackingSearchSpot.Group to)
 	{
 		return this.matches(from, null, to);
 	}
 
-	boolean matches(HerbiboarSearchSpot.Group from, HerbiboarSearchSpot.Group to)
+	boolean matches(TrackingSearchSpot.Group from, TrackingSearchSpot.Group to)
 	{
 		return this.matches(null, from, to);
 	}
 
-	boolean matches(HerbiboarStart fromStart, HerbiboarSearchSpot.Group fromGroup, HerbiboarSearchSpot.Group to)
+	boolean matches(TrackingStart fromStart, TrackingSearchSpot.Group fromGroup, TrackingSearchSpot.Group to)
 	{
 		return this.to == to
 			&& (fromStart != null && this.fromStart == fromStart || fromGroup != null && this.fromGroup == fromGroup);

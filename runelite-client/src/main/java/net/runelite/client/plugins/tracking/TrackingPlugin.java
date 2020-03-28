@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.herbiboars;
+package net.runelite.client.plugins.tracking;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
@@ -67,13 +67,13 @@ import net.runelite.client.util.Text;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
-	name = "Herbiboar",
+	name = "Tracking",
 	description = "Highlight starting rocks, trails, and the objects to search at the end of each trail",
-	tags = {"herblore", "hunter", "skilling", "overlay"}
+	tags = {"herblore", "hunter", "skilling", "overlay, herbiboar"}
 )
 @Slf4j
 @Getter
-public class HerbiboarPlugin extends Plugin
+public class TrackingPlugin extends Plugin
 {
 	private static final List<WorldPoint> END_LOCATIONS = ImmutableList.of(
 		new WorldPoint(3693, 3798, 0),
@@ -112,10 +112,10 @@ public class HerbiboarPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
-	private HerbiboarOverlay overlay;
+	private TrackingOverlay overlay;
 
 	@Inject
-	private HerbiboarMinimapOverlay minimapOverlay;
+	private TrackingMinimapOverlay minimapOverlay;
 
 	/**
 	 * Objects which appear at the beginning of Herbiboar hunting trails
@@ -140,22 +140,22 @@ public class HerbiboarPlugin extends Plugin
 	/**
 	 * Sequence of herbiboar spots searched along the current trail
 	 */
-	private final List<HerbiboarSearchSpot> currentPath = Lists.newArrayList();
+	private final List<TrackingSearchSpot> currentPath = Lists.newArrayList();
 
 	private boolean inHerbiboarArea;
 	private TrailToSpot nextTrail;
-	private HerbiboarSearchSpot.Group currentGroup;
+	private TrackingSearchSpot.Group currentGroup;
 	private int finishId;
 
 	private boolean started;
 	private WorldPoint startPoint;
-	private HerbiboarStart startSpot;
+	private TrackingStart startSpot;
 	private boolean ruleApplicable;
 
 	@Provides
-	HerbiboarConfig provideConfig(ConfigManager configManager)
+	TrackingConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(HerbiboarConfig.class);
+		return configManager.getConfig(TrackingConfig.class);
 	}
 
 	@Override
@@ -195,7 +195,7 @@ public class HerbiboarPlugin extends Plugin
 		boolean wasStarted = started;
 
 		// Get trail data
-		for (HerbiboarSearchSpot spot : HerbiboarSearchSpot.values())
+		for (TrackingSearchSpot spot : TrackingSearchSpot.values())
 		{
 			for (TrailToSpot trail : spot.getTrails())
 			{
@@ -231,10 +231,10 @@ public class HerbiboarPlugin extends Plugin
 
 		if (!wasStarted && started)
 		{
-			startSpot = HerbiboarStart.from(startPoint);
+			startSpot = TrackingStart.from(startPoint);
 		}
 
-		ruleApplicable = HerbiboarRule.canApplyRule(startSpot, currentPath);
+		ruleApplicable = TrackingRule.canApplyRule(startSpot, currentPath);
 
 		if (finished)
 		{
@@ -366,14 +366,14 @@ public class HerbiboarPlugin extends Plugin
 		}
 
 		// Trails
-		if (HerbiboarSearchSpot.isTrail(newObject.getId()))
+		if (TrackingSearchSpot.isTrail(newObject.getId()))
 		{
 			trails.put(newObject.getWorldLocation(), newObject);
 			return;
 		}
 
 		// GameObject to trigger next trail (mushrooms, mud, seaweed, etc)
-		if (HerbiboarSearchSpot.isSearchSpot(newObject.getWorldLocation()))
+		if (TrackingSearchSpot.isSearchSpot(newObject.getWorldLocation()))
 		{
 			trailObjects.put(newObject.getWorldLocation(), newObject);
 			return;

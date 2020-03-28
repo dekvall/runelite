@@ -22,15 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.herbiboars;
+package net.runelite.client.plugins.tracking;
 
 import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
+// Keep the herbiboar config group to preserve user's settings
 @ConfigGroup("herbiboar")
-public interface HerbiboarConfig extends Config
+public interface TrackingConfig extends Config
 {
 	@ConfigItem(
 		position = 0,
@@ -69,7 +70,7 @@ public interface HerbiboarConfig extends Config
 		position = 3,
 		keyName = "showTunnel",
 		name = "Show End Tunnels",
-		description = "Show highlights for tunnels with herbiboars"
+		description = "Show highlights for tunnels with herbiboars or kebbits"
 	)
 	default boolean isTunnelShown()
 	{
@@ -80,7 +81,7 @@ public interface HerbiboarConfig extends Config
 		position = 4,
 		keyName = "colorTunnel",
 		name = "Tunnel Color",
-		description = "Color for tunnels with herbiboars"
+		description = "Color for tunnels with herbiboars or kebbits"
 	)
 	default Color getTunnelColor()
 	{

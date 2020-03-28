@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.herbiboars;
+package net.runelite.client.plugins.tracking;
 
 import com.google.inject.Inject;
 import java.awt.Dimension;
@@ -35,13 +35,13 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-class HerbiboarMinimapOverlay extends Overlay
+class TrackingMinimapOverlay extends Overlay
 {
-	private final HerbiboarPlugin plugin;
-	private final HerbiboarConfig config;
+	private final TrackingPlugin plugin;
+	private final TrackingConfig config;
 
 	@Inject
-	public HerbiboarMinimapOverlay(HerbiboarPlugin plugin, HerbiboarConfig config)
+	public TrackingMinimapOverlay(TrackingPlugin plugin, TrackingConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);

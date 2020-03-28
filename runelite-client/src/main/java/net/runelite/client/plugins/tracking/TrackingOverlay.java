@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.herbiboars;
+package net.runelite.client.plugins.tracking;
 
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
@@ -38,13 +38,13 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-class HerbiboarOverlay extends Overlay
+class TrackingOverlay extends Overlay
 {
-	private final HerbiboarPlugin plugin;
-	private final HerbiboarConfig config;
+	private final TrackingPlugin plugin;
+	private final TrackingConfig config;
 
 	@Inject
-	public HerbiboarOverlay(HerbiboarPlugin plugin, HerbiboarConfig config)
+	public TrackingOverlay(TrackingPlugin plugin, TrackingConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
@@ -60,7 +60,7 @@ class HerbiboarOverlay extends Overlay
 			return null;
 		}
 
-		HerbiboarSearchSpot.Group currentGroup = plugin.getCurrentGroup();
+		TrackingSearchSpot.Group currentGroup = plugin.getCurrentGroup();
 		TrailToSpot nextTrail = plugin.getNextTrail();
 		int finishId = plugin.getFinishId();
 
@@ -95,7 +95,7 @@ class HerbiboarOverlay extends Overlay
 			}
 			else
 			{
-				for (WorldPoint trailLoc : HerbiboarSearchSpot.getGroupLocations(plugin.getCurrentGroup()))
+				for (WorldPoint trailLoc : TrackingSearchSpot.getGroupLocations(plugin.getCurrentGroup()))
 				{
 					TileObject object = plugin.getTrailObjects().get(trailLoc);
 					drawObjectLocation(graphics, object, config.getObjectColor());

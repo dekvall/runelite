@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.herbiboars;
+package net.runelite.client.plugins.tracking;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
@@ -37,7 +37,7 @@ import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 
 @Getter
-enum HerbiboarSearchSpot
+enum TrackingSearchSpot
 {
 	// Wiki A location
 	A_MUSHROOM(Group.A, new WorldPoint(3670, 3889, 0),
@@ -118,17 +118,17 @@ enum HerbiboarSearchSpot
 		new TrailToSpot(Varbits.HB_TRAIL_31369, 1, NULL_31369)),
 	;
 
-	private static final ImmutableMultimap<Group, HerbiboarSearchSpot> GROUPS;
+	private static final ImmutableMultimap<Group, TrackingSearchSpot> GROUPS;
 	private static final Set<WorldPoint> SPOTS;
 	private static final Set<Integer> TRAILS;
 
 	static
 	{
-		ImmutableMultimap.Builder<Group, HerbiboarSearchSpot> groupBuilder = new ImmutableMultimap.Builder<>();
+		ImmutableMultimap.Builder<Group, TrackingSearchSpot> groupBuilder = new ImmutableMultimap.Builder<>();
 		ImmutableSet.Builder<WorldPoint> spotBuilder = new ImmutableSet.Builder<>();
 		ImmutableSet.Builder<Integer> trailBuilder = new ImmutableSet.Builder<>();
 
-		for (HerbiboarSearchSpot spot : values())
+		for (TrackingSearchSpot spot : values())
 		{
 			groupBuilder.put(spot.getGroup(), spot);
 			spotBuilder.add(spot.getLocation());
@@ -148,7 +148,7 @@ enum HerbiboarSearchSpot
 	private final WorldPoint location;
 	private final List<TrailToSpot> trails;
 
-	HerbiboarSearchSpot(Group group, WorldPoint location, TrailToSpot... trails)
+	TrackingSearchSpot(Group group, WorldPoint location, TrailToSpot... trails)
 	{
 		this.group = group;
 		this.location = location;
@@ -175,6 +175,6 @@ enum HerbiboarSearchSpot
 
 	static List<WorldPoint> getGroupLocations(Group group)
 	{
-		return GROUPS.get(group).stream().map(HerbiboarSearchSpot::getLocation).collect(Collectors.toList());
+		return GROUPS.get(group).stream().map(TrackingSearchSpot::getLocation).collect(Collectors.toList());
 	}
 }

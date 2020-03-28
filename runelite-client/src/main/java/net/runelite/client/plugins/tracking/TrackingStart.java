@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.herbiboars;
+package net.runelite.client.plugins.tracking;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ import net.runelite.api.coords.WorldPoint;
 
 @Getter
 @RequiredArgsConstructor
-enum HerbiboarStart
+enum TrackingStart
 {
 	MIDDLE(new WorldPoint(3686, 3870, 0)),
 	LEPRECHAUN(new WorldPoint(3705, 3830, 0)),
@@ -41,9 +41,9 @@ enum HerbiboarStart
 
 	private final WorldPoint location;
 
-	static HerbiboarStart from(WorldPoint location)
+	static TrackingStart from(WorldPoint location)
 	{
-		for (final HerbiboarStart start : values())
+		for (final TrackingStart start : values())
 		{
 			if (start.getLocation().equals(location))
 			{
