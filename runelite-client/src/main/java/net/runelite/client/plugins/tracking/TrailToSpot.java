@@ -53,21 +53,32 @@ class TrailToSpot
 	 * along the current trail.
 	 */
 	private final int value;
+
+	/**
+	 * Some trails go around, and requires a conditional varbit value check.
+	 */
+	private final boolean requires4;
 	/**
 	 * The object ID of the footprints which appear when the trail is made visible.
 	 */
 	@Getter
 	private final Set<Integer> footprintIds;
 
-	TrailToSpot(Varbits varbit, int value, int... footprintIds)
+	TrailToSpot(Varbits varbit, int value, boolean requires4, int... footprintIds)
 	{
 		this.varbit = varbit;
 		this.value = value;
+		this.requires4 = requires4;
 		this.footprintIds = ImmutableSet.copyOf(
 			Arrays.stream(footprintIds)
 				.boxed()
 				.collect(Collectors.toSet())
 		);
+	}
+
+	TrailToSpot(Varbits varbit, int value, int... footprintIds)
+	{
+		this(varbit, value, false, footprintIds);
 	}
 
 	TrailToSpot(Varbits varbit, int value, int footprintId)

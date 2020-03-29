@@ -106,7 +106,7 @@ class TrackingOverlay extends Overlay
 		// Draw finish tunnels
 		if (config.isTunnelShown() && finishId > 0)
 		{
-			WorldPoint finishLoc = plugin.getEndLocations().get(finishId - 1);
+			WorldPoint finishLoc = plugin.getEndLocations().get(finishId - 1 + 9); //Todo this properly
 			TileObject object = plugin.getTunnels().get(finishLoc);
 			drawObjectLocation(graphics, object, config.getTunnelColor());
 		}

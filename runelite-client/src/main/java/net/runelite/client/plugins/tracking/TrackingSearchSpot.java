@@ -124,33 +124,34 @@ enum TrackingSearchSpot
 	// Razorback
 	// -------------------------------------------------------------------------
 
+	// If the path goes from the lower to RA the corresponding varbits become 4 instead of the normal 3
 	RA_NORTH(Group.RA, new WorldPoint(2349, 3620, 0),
 		new TrailToSpot(Varbits.RB_TRAIL_2986, 1, NULL_19466, NULL_19467, NULL_19714)),
 
 	RA_EAST(Group.RA, new WorldPoint(2352, 3618, 0),
-		new TrailToSpot(Varbits.RB_TRAIL_2991, 1, NULL_19719, NULL_19477)),
+		new TrailToSpot(Varbits.RB_TRAIL_2991, 2, true, NULL_19719, NULL_19476, NULL_19477),
+		new TrailToSpot(Varbits.RB_TRAIL_2991, 1, NULL_19719, NULL_19476, NULL_19477)),
 
 	RA_SOUTH(Group.RA, new WorldPoint(2349, 3617, 0),
-		new TrailToSpot(Varbits.RB_TRAIL_2990, 2, NULL_19475, NULL_19474, NULL_19718),
-		new TrailToSpot(Varbits.RB_TRAIL_2991, 1, NULL_19719, NULL_19477)),
-
-
+		new TrailToSpot(Varbits.RB_TRAIL_2990, 2, true, NULL_19475, NULL_19474, NULL_19718)),
 
 	// ---------------------------------------------------------------------------------------------
-//	RB_PLANT_NORTH(Group.RB, new WorldPoint(2345, 3614, 0),
+//	RB_NORTH(Group.RB, new WorldPoint(2345, 3614, 0),
 //		new TrailToSpot()),
-//	RB_PLANT_WEST(Group.RB, new WorldPoint(2344, 3612, 0),
-//		new TrailToSpot()),
+	RB_WEST(Group.RB, new WorldPoint(2344, 3612, 0),
+		new TrailToSpot(Varbits.RB_TRAIL_2988, 2, true, NULL_19716, NULL_19470, NULL_19471)),
 	RB_EAST(Group.RB, new WorldPoint(2348, 3612, 0),
 		new TrailToSpot(Varbits.RB_TRAIL_2989, 1, NULL_19717, NULL_19472, NULL_19473)),
 
 	// ---------------------------------------------------------------------------------------------
 
 	RC_EAST(Group.RC, new WorldPoint(2360, 3618, 0),
-		new TrailToSpot(Varbits.RB_TRAIL_2987, 2, NULL_19467, NULL_19468, NULL_19721)),
+		new TrailToSpot(Varbits.RB_TRAIL_2987, 2, true, NULL_19467, NULL_19468, NULL_19721), //maybe four
+		new TrailToSpot(Varbits.RB_TRAIL_2993, 1, true, NULL_19480, NULL_19481, NULL_19721)),
 
 	RC_NORTH(Group.RC, new WorldPoint(2356, 3620, 0),
-		new TrailToSpot(Varbits.RB_TRAIL_2993, 2, NULL_19721, NULL_19480, NULL_19481)),
+		new TrailToSpot(Varbits.RB_TRAIL_2993, 2, NULL_19721, NULL_19480, NULL_19481),
+		new TrailToSpot(Varbits.RB_TRAIL_2987, 2, true, NULL_19715, NULL_19468, NULL_19469)),
 
 	RC_WEST(Group.RC, new WorldPoint(2356, 3618, 0),
 		new TrailToSpot(Varbits.RB_TRAIL_2991, 2, NULL_19719, NULL_19477)),
@@ -158,10 +159,10 @@ enum TrackingSearchSpot
 	// ---------------------------------------------------------------------------------------------
 
 	RD_NORTH(Group.RD, new WorldPoint(2363, 3617, 0),
-		new TrailToSpot(Varbits.RB_TRAIL_2985, 2, NULL_19713, NULL_19464, NULL_19465)),
+		new TrailToSpot(Varbits.RB_TRAIL_2985, 2, true, NULL_19713, NULL_19464, NULL_19465)),
 
 	RD_SOUTH(Group.RD, new WorldPoint(2362, 3614,0),
-		new TrailToSpot(Varbits.RB_TRAIL_2992, 2, NULL_19720, NULL_19720, NULL_19720)), //FIIIX
+		new TrailToSpot(Varbits.RB_TRAIL_2992, 2, true, NULL_19720, NULL_19720, NULL_19720)), //FIIIX
 
 	// ------------------------------------------------------------------------------------------------
 	RE_SOUTH(Group.RE, new WorldPoint(2362, 3610, 0),
@@ -171,18 +172,19 @@ enum TrackingSearchSpot
 		new TrailToSpot(Varbits.RB_TRAIL_2981, 1, NULL_19710, NULL_19757, NULL_19758)),
 
 	// ------------------------------------------------------------------------------------------------
-	//RF_NORTH(Group.RF, new WorldPoint(2358, 3603, 0),
-		//new TrailToSpot(Varbits.RB_TRAIL_2979, 2, NULL_19709)),
+	RF_NORTH(Group.RF, new WorldPoint(2358, 3603, 0),
+		new TrailToSpot(Varbits.RB_TRAIL_2979, 2, NULL_19708, NULL_19454, NULL_19455)),
 //	RF_SOUTH(Group.RF, new WorldPoint(2358, 3599, 0),
 
 	// -------------------------------------------------------------------------------------------------
 	//RG_EAST(Group.RG, new WorldPoint(2358, 3607, 0))
 	RG_WEST(Group.RG, new WorldPoint(2355, 3608, 0),
-		new TrailToSpot(Varbits.RB_TRAIL_2982, 2, NULL_19710, NULL_19711, NULL_19460))
+		new TrailToSpot(Varbits.RB_TRAIL_2982, 2, NULL_19711, NULL_19460)),
 
 	// ------------------------------------------------------------------------------------------------
 	//RH_NORTH(Group.RH, new WorldPoint(2352, 3612, 0))
-	//RH_SOUTH(Group.RH, new WorldPoint(2351, 3608, 0))
+	RH_SOUTH(Group.RH, new WorldPoint(2351, 3608, 0),
+		new TrailToSpot(Varbits.RB_TRAIL_2983, 2, true, NULL_19712, NULL_19462, NULL_19463))
 
 	// ------------------------------------------------------------------------------------------------
 	//RI_NORTH(Group.RI, new WorldPoint(2347, 3607, 0))

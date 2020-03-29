@@ -93,11 +93,11 @@ public class TrackingPlugin extends Plugin
 		// Razorback
 		new WorldPoint(2358, 3620, 0),
 		new WorldPoint(2351, 3619, 0),
-		new WorldPoint(2362, 3615, 0),
+		new WorldPoint(2362, 3615, 0), //Correct
 		new WorldPoint(2354, 3609, 0),
 		new WorldPoint(2357, 3607, 0),
 		new WorldPoint(2349, 3604, 0),
-		new WorldPoint(2360, 3602, 0),
+		new WorldPoint(2360, 3602, 0), //Correct
 		new WorldPoint(2355, 3601, 0)
 	);
 
@@ -235,10 +235,11 @@ public class TrackingPlugin extends Plugin
 					if (!currentPath.contains(spot))
 					{
 						currentPath.add(spot);
-						log.info("current_group {}", spot.getGroup());
+						log.info("current spot {}, current_group {}",spot,  spot.getGroup());
 					}
 				}
-				else if (value > 0)
+				else if (value > 0 && value < 4
+					|| trail.isRequires4() && value == 4)
 				{
 					// The current trail
 					shownTrails.addAll(trail.getFootprintIds());
