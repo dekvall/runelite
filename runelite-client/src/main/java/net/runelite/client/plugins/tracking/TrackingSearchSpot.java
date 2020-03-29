@@ -146,7 +146,6 @@ enum TrackingSearchSpot
 	// ---------------------------------------------------------------------------------------------
 
 	RC_EAST(Group.RC, new WorldPoint(2360, 3618, 0),
-		new TrailToSpot(Varbits.RB_TRAIL_2987, 2, true, NULL_19467, NULL_19468, NULL_19721), //maybe four
 		new TrailToSpot(Varbits.RB_TRAIL_2993, 1, true, NULL_19480, NULL_19481, NULL_19721)),
 
 	RC_NORTH(Group.RC, new WorldPoint(2356, 3620, 0),
@@ -172,27 +171,37 @@ enum TrackingSearchSpot
 		new TrailToSpot(Varbits.RB_TRAIL_2981, 1, NULL_19710, NULL_19757, NULL_19758)),
 
 	// ------------------------------------------------------------------------------------------------
-	RF_NORTH(Group.RF, new WorldPoint(2358, 3603, 0),
-		new TrailToSpot(Varbits.RB_TRAIL_2979, 2, NULL_19708, NULL_19454, NULL_19455)),
-//	RF_SOUTH(Group.RF, new WorldPoint(2358, 3599, 0),
+	RF_WEST(Group.RF, new WorldPoint(2358, 3603, 0),
+		new TrailToSpot(Varbits.RB_TRAIL_2979, 2, true, NULL_19708, NULL_19454, NULL_19455)),
+//	RF_EAST(Group.RF, new WorldPoint(2363, 3602, 0))
 
 	// -------------------------------------------------------------------------------------------------
-	//RG_EAST(Group.RG, new WorldPoint(2358, 3607, 0))
+	RG_EAST(Group.RG, new WorldPoint(2358, 3607, 0),
+		new TrailToSpot(Varbits.RB_TRAIL_2979, 1, NULL_19710, NULL_19454, NULL_19455)),
 	RG_WEST(Group.RG, new WorldPoint(2355, 3608, 0),
-		new TrailToSpot(Varbits.RB_TRAIL_2982, 2, NULL_19711, NULL_19460)),
+		new TrailToSpot(Varbits.RB_TRAIL_2982, 2, true, NULL_19711, NULL_19460),
+		new TrailToSpot(Varbits.RB_TRAIL_2982, 1, true, NULL_19711, NULL_19460)),
 
 	// ------------------------------------------------------------------------------------------------
 	//RH_NORTH(Group.RH, new WorldPoint(2352, 3612, 0))
 	RH_SOUTH(Group.RH, new WorldPoint(2351, 3608, 0),
-		new TrailToSpot(Varbits.RB_TRAIL_2983, 2, true, NULL_19712, NULL_19462, NULL_19463))
+		new TrailToSpot(Varbits.RB_TRAIL_2983, 2, true, NULL_19712, NULL_19462, NULL_19463)),
 
 	// ------------------------------------------------------------------------------------------------
 	//RI_NORTH(Group.RI, new WorldPoint(2347, 3607, 0))
-	//RI_SOUTH(Group.RI, new WorldPoint(2347, 3603, 0))
+	RI_SOUTH(Group.RI, new WorldPoint(2347, 3603, 0),
+	new TrailToSpot(Varbits.RB_TRAIL_2976, 1, NULL_19447, NULL_19448)),
 
 	// -------------------------------------------------------------------------------------------------
-	//RJ_SOUTH(Group.RJ, new WorldPoint(2355, 3598, 0))
+	RJ_SOUTH(Group.RJ, new WorldPoint(2355, 3598, 0),
+		new TrailToSpot(Varbits.RB_TRAIL_2975, 2, true, NULL_19444, NULL_19444)), //FIIIX
 	//RJ_NORTH(Group.RJ, new WorldPoint(2352, 3603, 0))
+
+	RK_EAST(Group.RK, new WorldPoint(2362, 3598, 0),
+		new TrailToSpot(Varbits.RB_TRAIL_2974, 2, true, NULL_19441, NULL_19442),
+		new TrailToSpot(Varbits.RB_TRAIL_2974, 1, NULL_19441, NULL_19442)),
+	RK_WEST(Group.RK, new WorldPoint(2358, 3599, 0),
+		new TrailToSpot(Varbits.RB_TRAIL_2977, 2, true, NULL_19706, NULL_19706)), ///FIIIX
 	;
 
 	private static final ImmutableMultimap<Group, TrackingSearchSpot> GROUPS;

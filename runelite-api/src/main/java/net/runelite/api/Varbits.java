@@ -254,6 +254,9 @@ public enum Varbits
 	RB_TRAIL_2981(2981),
 	RB_TRAIL_2982(2982),
 
+	RB_TRAIL_2977(2977),
+	RB_TRAIL_2975(2975),
+
 	RB_FINISH(2994),
 
 	/**

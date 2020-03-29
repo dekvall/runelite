@@ -95,10 +95,10 @@ public class TrackingPlugin extends Plugin
 		new WorldPoint(2351, 3619, 0),
 		new WorldPoint(2362, 3615, 0), //Correct
 		new WorldPoint(2354, 3609, 0),
-		new WorldPoint(2357, 3607, 0),
-		new WorldPoint(2349, 3604, 0),
+		new WorldPoint(2357, 3607, 0), //Correct
+		new WorldPoint(2349, 3604, 0), //Correct
 		new WorldPoint(2360, 3602, 0), //Correct
-		new WorldPoint(2355, 3601, 0)
+		new WorldPoint(2355, 3601, 0)  //Correct
 	);
 
 	private static final Set<Integer> START_OBJECT_IDS = ImmutableSet.of(
@@ -238,7 +238,7 @@ public class TrackingPlugin extends Plugin
 						log.info("current spot {}, current_group {}",spot,  spot.getGroup());
 					}
 				}
-				else if (value > 0 && value < 4
+				else if (value > trail.getValue() && value < 4
 					|| trail.isRequires4() && value == 4)
 				{
 					// The current trail
