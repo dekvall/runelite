@@ -300,7 +300,11 @@ class DevToolsOverlay extends Overlay
 	private void renderGroundObject(Graphics2D graphics, Tile tile, Player player)
 	{
 		GroundObject groundObject = tile.getGroundObject();
-		if (groundObject != null)
+		if (groundObject != null
+			&& groundObject.getId() != 4735
+			&& groundObject.getId() != 9486
+			&& groundObject.getId() != 9487
+			&& groundObject.getId() != 9488)
 		{
 			if (player.getLocalLocation().distanceTo(groundObject.getLocalLocation()) <= MAX_DISTANCE)
 			{
