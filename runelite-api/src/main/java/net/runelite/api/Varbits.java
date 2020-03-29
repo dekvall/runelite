@@ -229,6 +229,39 @@ public enum Varbits
 	HB_STARTED(5767),
 
 	/**
+	 * Razorback trails
+	 */
+	RB_TRAIL_2986(2986),
+	RB_TRAIL_2988(2988),
+	RB_TRAIL_2990(2990),
+	RB_TRAIL_2991(2991),
+
+	RB_TRAIL_2989(2989),
+	RB_TRAIL_2987(2987),
+
+	RB_TRAIL_2992(2992),
+	RB_TRAIL_2993(2993),
+	RB_TRAIL_2985(2985),
+
+	RB_TRAIL_2979(2979),
+
+	RB_TRAIL_2980(2980),
+
+	RB_TRAIL_2976(2976),
+	RB_TRAIL_2983(2983),
+
+	RB_FINISH(2994),
+
+	/**
+	 * Started hunting Razor-backed kebbits.
+	 * <br>
+	 * NOTE: This value remains at 0 even after starting a tracking trail up until searching the first object along the
+	 * hunting path.
+	 */
+	RB_STARTED(2984),
+
+
+	/**
 	 * Barbarian Assault
 	 */
 	IN_GAME_BA(3923),

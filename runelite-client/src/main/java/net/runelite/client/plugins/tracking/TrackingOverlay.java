@@ -55,7 +55,7 @@ class TrackingOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isInHerbiboarArea())
+		if (!plugin.isInTrackingArea())
 		{
 			return null;
 		}

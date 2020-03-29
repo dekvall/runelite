@@ -40,6 +40,9 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
+import static net.runelite.api.ObjectID.BURROW;
+import static net.runelite.api.ObjectID.BURROW_19439;
+import static net.runelite.api.ObjectID.BURROW_19440;
 import static net.runelite.api.ObjectID.DRIFTWOOD_30523;
 import static net.runelite.api.ObjectID.MUSHROOM_30520;
 import static net.runelite.api.ObjectID.ROCK_30519;
@@ -76,6 +79,7 @@ import org.apache.commons.lang3.ArrayUtils;
 public class TrackingPlugin extends Plugin
 {
 	private static final List<WorldPoint> END_LOCATIONS = ImmutableList.of(
+		// Herbiboar
 		new WorldPoint(3693, 3798, 0),
 		new WorldPoint(3702, 3808, 0),
 		new WorldPoint(3703, 3826, 0),
@@ -84,22 +88,42 @@ public class TrackingPlugin extends Plugin
 		new WorldPoint(3715, 3840, 0),
 		new WorldPoint(3751, 3849, 0),
 		new WorldPoint(3685, 3869, 0),
-		new WorldPoint(3681, 3863, 0)
+		new WorldPoint(3681, 3863, 0),
+
+		// Razorback
+		new WorldPoint(2358, 3620, 0),
+		new WorldPoint(2351, 3619, 0),
+		new WorldPoint(2362, 3615, 0),
+		new WorldPoint(2354, 3609, 0),
+		new WorldPoint(2357, 3607, 0),
+		new WorldPoint(2349, 3604, 0),
+		new WorldPoint(2360, 3602, 0),
+		new WorldPoint(2355, 3601, 0)
 	);
 
 	private static final Set<Integer> START_OBJECT_IDS = ImmutableSet.of(
+		// Herbiboar
 		ROCK_30519,
 		MUSHROOM_30520,
 		ROCK_30521,
 		ROCK_30522,
-		DRIFTWOOD_30523
+		DRIFTWOOD_30523,
+
+		// Razorback
+		BURROW,
+		BURROW_19439,
+		BURROW_19440
 	);
 
-	private static final List<Integer> HERBIBOAR_REGIONS = ImmutableList.of(
+	private static final List<Integer> TRACKING_REGIONS = ImmutableList.of(
+		// Herbiboar
 		14652,
 		14651,
 		14908,
-		14907
+		14907,
+
+		// Razorback
+		9272
 	);
 
 	@Inject
@@ -142,7 +166,7 @@ public class TrackingPlugin extends Plugin
 	 */
 	private final List<TrackingSearchSpot> currentPath = Lists.newArrayList();
 
-	private boolean inHerbiboarArea;
+	private boolean inTrackingArea;
 	private TrailToSpot nextTrail;
 	private TrackingSearchSpot.Group currentGroup;
 	private int finishId;
@@ -168,7 +192,7 @@ public class TrackingPlugin extends Plugin
 		{
 			clientThread.invokeLater(() ->
 			{
-				inHerbiboarArea = checkArea();
+				inTrackingArea = checkArea();
 				updateTrailData();
 			});
 		}
@@ -181,12 +205,12 @@ public class TrackingPlugin extends Plugin
 		overlayManager.remove(minimapOverlay);
 		resetTrailData();
 		clearCache();
-		inHerbiboarArea = false;
+		inTrackingArea = false;
 	}
 
 	private void updateTrailData()
 	{
-		if (!isInHerbiboarArea())
+		if (!isInTrackingArea())
 		{
 			return;
 		}
@@ -211,6 +235,7 @@ public class TrackingPlugin extends Plugin
 					if (!currentPath.contains(spot))
 					{
 						currentPath.add(spot);
+						log.info("current_group {}", spot.getGroup());
 					}
 				}
 				else if (value > 0)
@@ -222,7 +247,7 @@ public class TrackingPlugin extends Plugin
 			}
 		}
 
-		finishId = client.getVar(Varbits.HB_FINISH);
+		finishId = Math.max(client.getVar(Varbits.HB_FINISH), client.getVar(Varbits.RB_FINISH));
 
 		// The started varbit doesn't get set until the first spot of the rotation has been searched
 		// so we need to use the current group as an indicator of the rotation being started
@@ -245,16 +270,20 @@ public class TrackingPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked menuOpt)
 	{
-		if (!inHerbiboarArea || started || MenuAction.GAME_OBJECT_FIRST_OPTION != menuOpt.getMenuAction())
+		if (!inTrackingArea || started || MenuAction.GAME_OBJECT_FIRST_OPTION != menuOpt.getMenuAction())
 		{
 			return;
 		}
 
 		switch (Text.removeTags(menuOpt.getMenuTarget()))
 		{
+			// Herbiboar
 			case "Rock":
 			case "Mushroom":
 			case "Driftwood":
+
+			// Razorback
+			case "Burrow":
 				startPoint = WorldPoint.fromScene(client, menuOpt.getActionParam(), menuOpt.getWidgetId(), client.getPlane());
 		}
 	}
@@ -292,7 +321,7 @@ public class TrackingPlugin extends Plugin
 				break;
 			case LOADING:
 				clearCache();
-				inHerbiboarArea = checkArea();
+				inTrackingArea = checkArea();
 				break;
 			default:
 				break;
@@ -389,7 +418,7 @@ public class TrackingPlugin extends Plugin
 	private boolean checkArea()
 	{
 		final int[] mapRegions = client.getMapRegions();
-		for (int region : HERBIBOAR_REGIONS)
+		for (int region : TRACKING_REGIONS)
 		{
 			if (ArrayUtils.contains(mapRegions, region))
 			{

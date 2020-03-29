@@ -25,8 +25,13 @@
  */
 package net.runelite.client.plugins.tracking;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import lombok.Getter;
 import lombok.Value;
 import net.runelite.api.Varbits;
 
@@ -51,10 +56,22 @@ class TrailToSpot
 	/**
 	 * The object ID of the footprints which appear when the trail is made visible.
 	 */
-	private final int footprint;
+	@Getter
+	private final Set<Integer> footprintIds;
 
-	Set<Integer> getFootprintIds()
+	TrailToSpot(Varbits varbit, int value, int... footprintIds)
 	{
-		return ImmutableSet.of(footprint, footprint + 1);
+		this.varbit = varbit;
+		this.value = value;
+		this.footprintIds = ImmutableSet.copyOf(
+			Arrays.stream(footprintIds)
+				.boxed()
+				.collect(Collectors.toSet())
+		);
+	}
+
+	TrailToSpot(Varbits varbit, int value, int footprintId)
+	{
+		this(varbit, value, footprintId, footprintId + 1);
 	}
 }

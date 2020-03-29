@@ -52,7 +52,7 @@ class TrackingMinimapOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.isTrailShown() || !plugin.isInHerbiboarArea())
+		if (!config.isTrailShown() || !plugin.isInTrackingArea())
 		{
 			return null;
 		}
