@@ -95,6 +95,9 @@ public class GroundMarkerPlugin extends Plugin
 	private GroundMarkerMinimapOverlay minimapOverlay;
 
 	@Inject
+	private GroundMarkerCountOverlay groundMarkerCountOverlay;
+
+	@Inject
 	private KeyManager keyManager;
 
 	private void savePoints(int regionId, Collection<GroundMarkerPoint> points)
@@ -238,6 +241,7 @@ public class GroundMarkerPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		overlayManager.add(minimapOverlay);
+		overlayManager.add(groundMarkerCountOverlay);
 		loadPoints();
 	}
 
@@ -246,6 +250,7 @@ public class GroundMarkerPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		overlayManager.remove(minimapOverlay);
+		overlayManager.remove(groundMarkerCountOverlay);
 		points.clear();
 	}
 

@@ -64,4 +64,14 @@ public interface GroundMarkerConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "showTileCount",
+			name = "Show tile count",
+			description = "Shows the number of currently placed tiles in a panel"
+	)
+	default boolean showTileCount()
+	{
+		return true;
+	}
 }
