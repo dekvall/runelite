@@ -26,14 +26,12 @@
 package net.runelite.client.plugins.groundmarkers;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Multiset;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+
+import java.util.*;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.AccessLevel;
@@ -76,6 +74,10 @@ public class GroundMarkerPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final List<ColorTileMarker> points = new ArrayList<>();
 
+	// Tiles are stored per region so we need to keep track of the total amount
+	@Getter(AccessLevel.PACKAGE)
+	private Map<Integer, Integer> tileCounts = new HashMap<>();
+
 	@Inject
 	private Client client;
 
@@ -110,6 +112,9 @@ public class GroundMarkerPlugin extends Plugin
 
 		String json = GSON.toJson(points);
 		configManager.setConfiguration(CONFIG_GROUP, REGION_PREFIX + regionId, json);
+
+		String counts = GSON.toJson(tileCounts);
+		configManager.setConfiguration(CONFIG_GROUP, "counts", counts);
 	}
 
 	private Collection<GroundMarkerPoint> getPoints(int regionId)
@@ -122,6 +127,19 @@ public class GroundMarkerPlugin extends Plugin
 
 		// CHECKSTYLE:OFF
 		return GSON.fromJson(json, new TypeToken<List<GroundMarkerPoint>>(){}.getType());
+		// CHECKSTYLE:ON
+	}
+
+	private void loadCounts()
+	{
+		String json = configManager.getConfiguration(CONFIG_GROUP, "counts");
+		if (Strings.isNullOrEmpty(json))
+		{
+			tileCounts = new HashMap<>();
+		}
+
+		// CHECKSTYLE:OFF
+		tileCounts = GSON.fromJson(json, new TypeToken<HashMap<Integer, Integer>>(){}.getType());
 		// CHECKSTYLE:ON
 	}
 
@@ -149,6 +167,7 @@ public class GroundMarkerPlugin extends Plugin
 			Collection<GroundMarkerPoint> regionPoints = getPoints(regionId);
 			Collection<ColorTileMarker> colorTileMarkers = translateToColorTileMarker(regionPoints);
 			points.addAll(colorTileMarkers);
+			tileCounts.put(regionId, regionPoints.size());
 		}
 	}
 
@@ -243,6 +262,7 @@ public class GroundMarkerPlugin extends Plugin
 		overlayManager.add(minimapOverlay);
 		overlayManager.add(groundMarkerCountOverlay);
 		loadPoints();
+		loadCounts();
 	}
 
 	@Override
@@ -252,6 +272,7 @@ public class GroundMarkerPlugin extends Plugin
 		overlayManager.remove(minimapOverlay);
 		overlayManager.remove(groundMarkerCountOverlay);
 		points.clear();
+		tileCounts.clear();
 	}
 
 	private void markTile(LocalPoint localPoint)

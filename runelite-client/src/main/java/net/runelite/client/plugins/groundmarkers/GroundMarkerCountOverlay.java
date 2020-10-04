@@ -18,7 +18,7 @@ public class GroundMarkerCountOverlay extends OverlayPanel
         super(plugin);
         this.plugin = plugin;
         this.config = config;
-        setPosition(OverlayPosition.TOP_LEFT);
+        setPosition(OverlayPosition.BOTTOM_LEFT);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class GroundMarkerCountOverlay extends OverlayPanel
 
         panelComponent.getChildren().add(LineComponent.builder()
                 .left("Tiles marked:")
-                .right(Integer.toString(plugin.getPoints().size()))
+                .right(Integer.toString(plugin.getTileCounts().values().stream().reduce(0, (tot, el) -> tot + el)))
                 .build());
 
         return super.render(graphics);
