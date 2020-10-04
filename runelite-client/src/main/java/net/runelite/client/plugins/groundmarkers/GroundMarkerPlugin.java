@@ -112,9 +112,6 @@ public class GroundMarkerPlugin extends Plugin
 
 		String json = GSON.toJson(points);
 		configManager.setConfiguration(CONFIG_GROUP, REGION_PREFIX + regionId, json);
-
-		String counts = GSON.toJson(tileCounts);
-		configManager.setConfiguration(CONFIG_GROUP, "counts", counts);
 	}
 
 	private Collection<GroundMarkerPoint> getPoints(int regionId)
@@ -301,5 +298,8 @@ public class GroundMarkerPlugin extends Plugin
 		savePoints(regionId, groundMarkerPoints);
 
 		loadPoints();
+
+		String counts = GSON.toJson(tileCounts);
+		configManager.setConfiguration(CONFIG_GROUP, "counts", counts);
 	}
 }
