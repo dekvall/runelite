@@ -24,23 +24,16 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@Getter
-@RequiredArgsConstructor
 public enum CharterShipsMode
 {
-	TALK("Talk-To"),
-	TRADE("Trade"),
-	CHARTER("Charter"),
-	LAST_DESTINATION("Last Destination");
-
-	private final String option;
-
-	@Override
-	public String toString()
+	TALK
 	{
-		return option;
-	}
+		@Override
+		public String toString() {
+			return "Talk-To";
+		}
+	},
+	TRADE,
+	CHARTER,
+	LAST_DESTINATION;
 }
