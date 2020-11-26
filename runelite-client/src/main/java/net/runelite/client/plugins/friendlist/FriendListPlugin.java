@@ -25,10 +25,13 @@
  */
 package net.runelite.client.plugins.friendlist;
 
+import com.google.common.base.Strings;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Friend;
 import net.runelite.api.Ignore;
+import net.runelite.api.Nameable;
 import net.runelite.api.NameableContainer;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarPlayer;
@@ -39,6 +42,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
+@Slf4j
 @PluginDescriptor(
 	name = "Friend List",
 	description = "Add extra information to the friend and ignore lists"
@@ -84,6 +88,7 @@ public class FriendListPlugin extends Plugin
 					")";
 
 				setFriendsListTitle(title);
+				showNameChanges(friendContainer);
 			}
 		}
 		else if (event.getScriptId() == ScriptID.IGNORE_UPDATE)
@@ -105,6 +110,19 @@ public class FriendListPlugin extends Plugin
 					")";
 
 				setIgnoreListTitle(title);
+				showNameChanges(ignoreContainer);
+			}
+		}
+	}
+
+	private void showNameChanges(NameableContainer container)
+	{
+		for (Nameable player : container.getMembers())
+		{
+			String prev = player.getPrevName();
+			if (!Strings.isNullOrEmpty(prev))
+			{
+				log.info("{} -> {}", prev, player.getName());
 			}
 		}
 	}
